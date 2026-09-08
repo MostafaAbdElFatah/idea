@@ -3,10 +3,11 @@
         "claude_code",
         "codex",
         "kiro",
-        "opencode",
-        "zed"
+        "zed",
+        "antigravity",
+        "copilot"
     ],
-    "cloud": false,
+    "cloud": true,
     "guidelines": true,
     "mcp": true,
     "nightwatch": false,
@@ -15,6 +16,7 @@
         "infer-conventions",
         "laravel-best-practices",
         "testing-best-practices",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "deploying-laravel-cloud"
     ]
 }
