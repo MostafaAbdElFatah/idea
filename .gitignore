@@ -25,3 +25,8 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+tests/Browser/Screenshots/
+reports/*
+!reports/stress/
+reports/stress/*
+!reports/stress/.gitkeep

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -14,34 +16,27 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'first_name' => 'Admin',
-                'last_name' => 'User',
-                'password' => Hash::make('admin-password'),
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-            ]
-        );
+        $referenceUsers = [
+            ['email' => 'admin@example.com', 'first_name' => 'Admin', 'last_name' => 'User', 'password' => 'admin-password'],
+            ['email' => 'test@example.com', 'first_name' => 'Test', 'last_name' => 'User', 'password' => 'test-password'],
+            ['email' => 'jane@example.com', 'first_name' => 'Jane', 'last_name' => 'Doe', 'password' => 'jane-password'],
+        ];
 
-        User::firstOrCreate([
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('test-password'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-        ]);
+        foreach ($referenceUsers as $referenceUser) {
+            User::firstOrCreate(
+                ['email' => $referenceUser['email']],
+                [
+                    'first_name' => $referenceUser['first_name'],
+                    'last_name' => $referenceUser['last_name'],
+                    'password' => Hash::make($referenceUser['password']),
+                    'email_verified_at' => now(),
+                    'remember_token' => Str::random(10),
+                ]
+            );
+        }
 
-        User::firstOrCreate([
-            'first_name' => 'Jane',
-            'last_name' => 'Doe',
-            'email' => 'jane@example.com',
-            'password' => Hash::make('jane-password'),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
-        ]);
-        User::factory(7)->create();
+        if (User::query()->count() < 10) {
+            User::factory(10 - User::query()->count())->create();
+        }
     }
 }

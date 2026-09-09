@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Step;
@@ -10,7 +12,7 @@ class StepController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): void
     {
         //
     }
@@ -18,7 +20,7 @@ class StepController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -26,7 +28,7 @@ class StepController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
@@ -34,7 +36,7 @@ class StepController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Step $step)
+    public function show(Step $step): void
     {
         //
     }
@@ -42,7 +44,7 @@ class StepController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Step $step)
+    public function edit(Step $step): void
     {
         //
     }
@@ -50,7 +52,7 @@ class StepController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Step $step)
+    public function update(Request $request, Step $step): void
     {
         //
     }
@@ -58,7 +60,7 @@ class StepController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Step $step)
+    public function destroy(Step $step): void
     {
         //
     }
