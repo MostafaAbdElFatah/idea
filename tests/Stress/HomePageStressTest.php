@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Pest\Stressless\stress;
+
 /**
  * Thresholds for GET /
  *   failed requests : 0
@@ -14,7 +16,7 @@ declare(strict_types=1);
 $baseUrl = getenv('STRESS_BASE_URL');
 
 it('serves the home page under 50 concurrent users', function () use ($baseUrl): void {
-    $result = stress($baseUrl.'/')
+    $result = stress($baseUrl . '/')
         ->concurrently(50)
         ->for(10)->seconds();
 
@@ -25,7 +27,7 @@ it('serves the home page under 50 concurrent users', function () use ($baseUrl):
     ->skip($baseUrl === false || $baseUrl === '', 'Set STRESS_BASE_URL to run stress tests.');
 
 it('returns 404 quickly for unknown paths under load', function () use ($baseUrl): void {
-    $result = stress($baseUrl.'/does-not-exist')
+    $result = stress($baseUrl . '/does-not-exist')
         ->concurrently(20)
         ->for(5)->seconds();
 

@@ -25,4 +25,18 @@ class StepFactory extends Factory
             'completed' => fake()->boolean(),
         ];
     }
+
+    public function completed(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'completed' => true,
+        ]);
+    }
+
+    public function incomplete(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'completed' => false,
+        ]);
+    }
 }

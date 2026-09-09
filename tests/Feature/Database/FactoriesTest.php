@@ -11,22 +11,22 @@ describe('factories', function (): void {
     it('creates users', function (): void {
         User::factory()->count(3)->create();
 
-        $this->assertDatabaseCount('users', 3);
+        expect(User::query()->count())->toBe(3);
     });
 
     it('creates ideas with their own user', function (): void {
         Idea::factory()->count(3)->create();
 
-        $this->assertDatabaseCount('ideas', 3);
-        $this->assertDatabaseCount('users', 3);
+        expect(Idea::query()->count())->toBe(3)
+            ->and(User::query()->count())->toBe(3);
         expect(Idea::query()->whereNull('user_id')->count())->toBe(0);
     });
 
     it('creates steps with their own idea', function (): void {
         Step::factory()->count(3)->create();
 
-        $this->assertDatabaseCount('steps', 3);
-        $this->assertDatabaseCount('ideas', 3);
+        expect(Step::query()->count())->toBe(3)
+            ->and(Idea::query()->count())->toBe(3);
         expect(Step::query()->whereNull('idea_id')->count())->toBe(0);
     });
 

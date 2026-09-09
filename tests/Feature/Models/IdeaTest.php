@@ -44,7 +44,8 @@ describe('Idea persistence', function (): void {
         $idea = Idea::factory()->withStatus($status)->create();
 
         expect($idea->fresh()->status)->toBe($status);
-        $this->assertDatabaseHas('ideas', ['id' => $idea->id, 'status' => $value]);
+        //$this->assertDatabaseHas('ideas', ['id' => $idea->id, 'status' => $value]);
+        expect(Idea::query()->whereKey($idea->id)->where('status', $value)->exists())->toBeTrue();
     })->with('idea statuses');
 
     it('stores pending when no status is given', function (): void {
