@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\RegisteredUserController;
-use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\SessionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'));
