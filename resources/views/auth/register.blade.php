@@ -7,8 +7,6 @@
             <x-form.input name="last_name" label="Last name" autocomplete="family-name" />
         </div>
 
-        <x-form.input name="name" label="Name" />
-
         <x-form.input label="Email" name="email" type="email" />
 
 

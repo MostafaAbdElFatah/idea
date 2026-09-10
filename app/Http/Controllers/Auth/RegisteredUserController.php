@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreIdeaRequest;
+use App\Http\Requests\StoreRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +18,7 @@ class RegisteredUserController extends Controller
     /**
      * Store a newly registered user.
      */
-    public function store(StoreIdeaRequest $request)
+    public function store(StoreRegisterRequest $request)
     {
         $user = User::create($request->validated());
 

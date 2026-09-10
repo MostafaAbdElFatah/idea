@@ -7,6 +7,7 @@
         </div>
 
         <div class="flex items-center gap-2">
+            @auth
             <a href="/login" class="btn btn-outlined">
                 Login
             </a>
@@ -14,6 +15,12 @@
             <a href="/register" class="btn">
                 Get Started
             </a>
+            @else
+            <a href="/logout" class="btn btn-outlined">
+                Logout
+            </a>
+            @endauth
+
         </div>
     </div>
 </nav>

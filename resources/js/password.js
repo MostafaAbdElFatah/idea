@@ -1,26 +1,26 @@
 const strengthLevels = [
     {
         label: 'Very weak',
-        color: 'bg-red-500',
-        text: 'text-red-500',
+        color: 'bg-error',
+        text: 'text-error',
         hint: 'Add more characters to make it harder to guess.',
     },
     {
         label: 'Weak',
-        color: 'bg-amber-500',
-        text: 'text-amber-500',
+        color: 'bg-warning',
+        text: 'text-warning',
         hint: 'Try adding uppercase letters, numbers, or symbols.',
     },
     {
         label: 'Medium',
-        color: 'bg-sky-500',
-        text: 'text-sky-500',
+        color: 'bg-info',
+        text: 'text-info',
         hint: 'A few more characters can make this much stronger.',
     },
     {
         label: 'Strong',
-        color: 'bg-primary',
-        text: 'text-primary',
+        color: 'bg-success',
+        text: 'text-success',
         hint: 'Nice choice. This password is difficult to guess.',
     },
 ];
