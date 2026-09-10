@@ -3,36 +3,26 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class StoreRegisterRequest extends FormRequest
 {
     /**
-     * Prepare the data for validation.
+     * Determine if the user is authorized to make this request.
      */
-    protected function prepareForValidation(): void
+    public function authorize(): bool
     {
-        $this->merge([
-            'first_name' => trim($this->input('first_name', '')),
-            'last_name' => trim($this->input('last_name', '')),
-            'email' => trim($this->input('email', '')),
-            'password' => trim($this->input('password', '')),
-            'password_confirmation' => trim($this->input('password_confirmation', '')),
-        ]);
+        return false;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'first_name', 'last_name'  => ['required', 'string', 'min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email'),'unique:users,email'],
-            'password' => ['required', 'string', 'confirmed', Password::default()],
+            //
         ];
     }
 }
