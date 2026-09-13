@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -22,8 +24,8 @@ class SessionsController extends Controller
     public function store(Request $request)
     {
         $request->merge([
-            'email' => trim($request->input('email', '')),
-            'password' => trim($request->input('password', '')),
+            'email' => trim((string) $request->input('email')),
+            'password' => trim((string) $request->input('password')),
         ]);
 
         $credentials = $request->validate([

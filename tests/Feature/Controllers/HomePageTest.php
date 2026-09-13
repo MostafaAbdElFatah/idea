@@ -18,8 +18,8 @@ describe('home page', function (): void {
         get('/')->assertOk()->assertViewIs('welcome');
     });
 
-    it('does not advertise auth routes that do not exist', function (): void {
-        get('/')->assertDontSee('href="/login"', false)->assertDontSee('href="/register"', false);
+    it('advertises the login and register routes to guests', function (): void {
+        get('/')->assertSee('href="/login"', false)->assertSee('href="/register"', false);
     });
 
     it('returns 404 for unknown paths', function (): void {
