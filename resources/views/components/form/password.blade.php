@@ -7,35 +7,58 @@
 'showStrength' => false,
 ])
 
-<div {{ $attributes->only('class')->merge(['class' => 'flex flex-col items-start space-y-2']) }}>
+<div 
+    x-data="passwordField({{ Illuminate\Support\Js::from($label) }}, 
+    {{ Illuminate\Support\Js::from(old($name, $value) ?? '') }})"
+    {{ $attributes->only('class')->merge(['class' => 'flex flex-col items-start space-y-2']) }}
+    >
     <label for="{{ $name }}" class="label">
         {{ $label }}
     </label>
 
     <div class="relative w-full">
-        <input 
-            id="{{ $name }}" 
-            name="{{ $name }}" 
-            type="password" 
-            value="{{ old($name, $value) }}"
+        <input
+            id="{{ $name }}"
+            name="{{ $name }}"
+            x-model="value"
+            :type="inputType"
             autocomplete="{{ $autocomplete }}" {{ $attributes->except('class') }}
             class="input pr-12 @error($name) border-red-600 focus:border-red-600 focus:ring-red-600/15 @enderror"
             placeholder="{{ $placeholder }}"
             required
         >
 
-        <button type="button" data-password-toggle="{{ $name }}"
+        <button 
+            type="button" 
+            @click="toggle()"
             class="absolute right-1 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center text-muted-foreground transition hover:text-primary focus:outline-none"
-            aria-label="Show {{ strtolower($label) }}" aria-pressed="false">
-            <svg data-password-eye="hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            :aria-label="toggleLabel" 
+            :aria-pressed="visible.toString()">
+            <svg 
+                x-show="!visible" 
+                aria-hidden="true" 
+                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor" 
+                stroke-width="1.8"
+                >
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M2.25 12s3.5-6 9.75-6 9.75 6 9.75 6-3.5 6-9.75 6S2.25 12 2.25 12Z" />
                 <circle cx="12" cy="12" r="2.75" />
             </svg>
 
-            <svg data-password-eye="shown" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <svg 
+                x-show="visible" 
+                x-cloak 
+                aria-hidden="true" 
+                xmlns="http://www.w3.org/2000/svg" 
+                class="h-5 w-5"
+                fill="none" 
+                viewBox="0 0 24 24"
+                stroke="currentColor" 
+                stroke-width="1.8"
+                >
                 <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.58 10.58a2 2 0 0 0 2.84 2.84" />
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -45,23 +68,26 @@
     </div>
 
     @if ($showStrength)
-    <div data-password-strength="{{ $name }}" class="hidden space-y-2 pt-1" aria-live="polite">
+    <div 
+        x-show="hasValue" 
+        x-cloak 
+        class="space-y-2 pt-1" 
+        aria-live="polite"
+        >
         <div class="flex w-full gap-1.5" aria-hidden="true">
-            @foreach (range(1, 4) as $segment)
-            <span data-strength-segment="{{ $segment }}"
-                class="block h-1.5 min-w-0 flex-1 rounded-full bg-input"></span>
+            @foreach (range(0, 3) as $segment)
+            <span :class="segmentClass({{ $segment }})"
+                class="block h-1.5 min-w-0 flex-1 rounded-full transition-colors duration-300"></span>
             @endforeach
         </div>
         <div class="flex items-center justify-between gap-3 text-xs">
-            <span data-strength-label class="font-semibold text-muted-foreground">Very weak</span>
-            <span data-strength-hint class="text-right text-muted-foreground">Use 12+ characters with a mix of letters,
+            <span x-text="level.label" :class="`font-semibold ${level.text}`" class="font-semibold text-muted-foreground">Very weak</span>
+            <span x-text="level.hint" class="text-right text-muted-foreground">Use 12+ characters with a mix of letters,
                 numbers, and symbols.</span>
         </div>
     </div>
     @endif
-    
+
 
     <x-form.error :name="$name" />
-
-
 </div>

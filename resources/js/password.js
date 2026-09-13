@@ -1,3 +1,5 @@
+import Alpine from 'alpinejs';
+
 const strengthLevels = [
     {
         label: 'Very weak',
@@ -26,149 +28,56 @@ const strengthLevels = [
 ];
 
 const getPasswordStrength = (password) => {
-let score = 0;
+    let score = 0;
 
-if (password.length >= 8) {
-    score++;
-}
+    if (password.length >= 8) {
+        score++;
+    }
 
-if (password.length >= 12) {
-    score++;
-}
+    if (password.length >= 12) {
+        score++;
+    }
 
-if (/[a-z]/.test(password) && /[A-Z]/.test(password)) {
-    score++;
-}
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) {
+        score++;
+    }
 
-if (/\d/.test(password) || /[^A-Za-z0-9]/.test(password)) {
-    score++;
-}
+    if (/\d/.test(password) || /[^A-Za-z0-9]/.test(password)) {
+        score++;
+    }
 
-return Math.max(1, Math.min(score, 4));
-
+    return Math.max(1, Math.min(score, 4));
 };
 
-const initializePasswordToggle = () => {
-document
-.querySelectorAll('[data-password-toggle]')
-.forEach((toggle) => {
-toggle.addEventListener('click', () => {
-const input = document.getElementById(
-toggle.dataset.passwordToggle
-);
+Alpine.data('passwordField', (label = 'Password', initialValue = '') => ({
+    value: initialValue,
+    visible: false,
 
-            if (!input) {
-                return;
-            }
+    toggle() {
+        this.visible = !this.visible;
+    },
 
-            const isVisible = input.type === 'text';
+    get inputType() {
+        return this.visible ? 'text' : 'password';
+    },
 
-            input.type = isVisible ? 'password' : 'text';
+    get toggleLabel() {
+        return `${this.visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`;
+    },
 
-            toggle.setAttribute(
-                'aria-pressed',
-                String(!isVisible)
-            );
+    get hasValue() {
+        return this.value.length > 0;
+    },
 
-            toggle.setAttribute(
-                'aria-label',
-                `${isVisible ? 'Show' : 'Hide'} password`
-            );
+    get strength() {
+        return getPasswordStrength(this.value);
+    },
 
-            toggle
-                .querySelector(
-                    '[data-password-eye="hidden"]'
-                )
-                ?.classList.toggle(
-                    'hidden',
-                    !isVisible
-                );
+    get level() {
+        return strengthLevels[this.strength - 1];
+    },
 
-            toggle
-                .querySelector(
-                    '[data-password-eye="shown"]'
-                )
-                ?.classList.toggle(
-                    'hidden',
-                    isVisible
-                );
-        });
-    });
-
-};
-
-const initializePasswordStrength = () => {
-document
-.querySelectorAll('[data-password-strength]')
-.forEach((meter) => {
-const input = document.getElementById(
-meter.dataset.passwordStrength
-);
-
-        const label = meter.querySelector(
-            '[data-strength-label]'
-        );
-
-        const hint = meter.querySelector(
-            '[data-strength-hint]'
-        );
-
-        const segments = meter.querySelectorAll(
-            '[data-strength-segment]'
-        );
-
-        if (!input) {
-            return;
-        }
-
-        const updateStrength = () => {
-            const password = input.value;
-
-            if (!password) {
-                meter.classList.add('hidden');
-                return;
-            }
-
-            const strength = getPasswordStrength(password);
-            const level = strengthLevels[strength - 1];
-
-            meter.classList.remove('hidden');
-
-            label.textContent = level.label;
-            hint.textContent = level.hint;
-
-            label.className =
-                `font-semibold ${level.text}`;
-
-            segments.forEach((segment, index) => {
-                segment.className =
-                    `h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-                        index < strength
-                            ? level.color
-                            : 'bg-input'
-                    }`;
-            });
-        };
-
-        input.addEventListener('input', updateStrength);
-
-        if (input.value) {
-            updateStrength();
-        }
-    });
-
-};
-
-const initializePasswordComponents = () => {
-initializePasswordToggle();
-initializePasswordStrength();
-};
-
-if (document.readyState === 'loading') {
-document.addEventListener(
-'DOMContentLoaded',
-initializePasswordComponents
-);
-} else {
-initializePasswordComponents();
-}
+    segmentClass(index) {
+        return index < this.strength ? this.level.color : 'bg-input';
+    },
+}));
