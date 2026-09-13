@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRegisterRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
@@ -24,10 +23,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        //return redirect('/')->with('message', 'Account created successfully!');
-
         return redirect()
-            ->route('login')
-            ->with('message', 'Account created successfully.');
+            ->route('home')
+            ->with('success', 'Account created successfully.');
     }
 }

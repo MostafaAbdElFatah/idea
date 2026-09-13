@@ -1,5 +1,5 @@
 <x-layout>
-    <x-form action="{{ route('register.store') }}" method="POST" title="Register an account"
+    <x-form action="{{ route('login.store') }}" method="POST" title="Register an account"
         description="Start tracking your ideas today">
 
         <x-form.input label="Email" name="email" type="email" />

@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class SessionsController extends Controller
 {
-
     /**
      * Show the form for creating a new resource.
      */
@@ -40,9 +38,11 @@ class SessionsController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect('/')->with('status', 'You are now logged in.');
-    }
 
+        return redirect()
+            ->route('home')
+            ->with('success', 'You are now logged in.');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -54,6 +54,8 @@ class SessionsController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('status', 'You have been logged out.');
+        return redirect()
+            ->route('home')
+            ->with('success', 'You have been logged out.');
     }
 }

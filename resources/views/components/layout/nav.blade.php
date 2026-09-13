@@ -8,6 +8,15 @@
 
         <div class="flex items-center gap-2">
             @auth
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit" class="btn btn-outlined">
+                    Logout
+                </button>
+            </form>
+            @else
             <a href="/login" class="btn btn-outlined">
                 Login
             </a>
@@ -15,10 +24,7 @@
             <a href="/register" class="btn">
                 Get Started
             </a>
-            @else
-            <a href="/logout" class="btn btn-outlined">
-                Logout
-            </a>
+
             @endauth
 
         </div>
