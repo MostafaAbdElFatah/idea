@@ -13,11 +13,15 @@
     </label>
 
     <div class="relative w-full">
-        <input id="{{ $name }}" name="{{ $name }}" type="password" value="{{ old($name, $value) }}"
+        <input 
+            id="{{ $name }}" 
+            name="{{ $name }}" 
+            type="password" 
+            value="{{ old($name, $value) }}"
             autocomplete="{{ $autocomplete }}" {{ $attributes->except('class') }}
-        class="input pr-12 @error($name) border-red-600 focus:border-red-600 focus:ring-red-600/15 @enderror"
-        placeholder="{{ $placeholder }}"
-        required
+            class="input pr-12 @error($name) border-red-600 focus:border-red-600 focus:ring-red-600/15 @enderror"
+            placeholder="{{ $placeholder }}"
+            required
         >
 
         <button type="button" data-password-toggle="{{ $name }}"

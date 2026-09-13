@@ -15,6 +15,7 @@
     <main class="min-h-[calc(100vh-4rem)] max-w-6xl mx-auto">
         {{ $slot }}
     </main>
+    <x-layout.success-message />
 </body>
 
 </html>
