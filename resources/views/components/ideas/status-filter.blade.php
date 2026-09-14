@@ -1,5 +1,6 @@
-@props([ 'statusCounts', 'totalCount' => null ])
+@props([ 'statusCounts'])
 @php
+    $totalCount = $statusCounts['all'];
     $statusOptions = collect(\App\Enums\IdeaStatus::cases())
         ->map(fn ($status) => [
             'value' => $status->value,

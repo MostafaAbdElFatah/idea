@@ -8,10 +8,10 @@ use App\Enums\IdeaStatus;
 use Database\Factories\IdeaFactory;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Collection;
 
 class Idea extends Model
 {
@@ -29,7 +29,6 @@ class Idea extends Model
     protected $attributes = [
         'status' => IdeaStatus::PENDING->value,
     ];
-
 
     public function user(): BelongsTo
     {

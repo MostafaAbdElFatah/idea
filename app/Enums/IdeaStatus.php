@@ -16,6 +16,17 @@ enum IdeaStatus: string
     case CANCELLED = 'cancelled';
     case ARCHIVED = 'archived';
 
+    public static function values(): array
+    {
+        //return array_column(IdeaStatus::cases(), 'value');
+        return array_map(fn($status) => $status->value, static::cases());
+    }
+
+    public static function has(string $value): bool
+    {
+        return in_array(strtolower(trim($value)), static::values);
+    }
+
     public function label(): string
     {
         return match ($this) {

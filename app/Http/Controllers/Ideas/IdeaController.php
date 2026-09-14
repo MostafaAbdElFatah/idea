@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateideaRequest;
 use App\Models\Idea;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class IdeaController extends Controller
 {
@@ -19,30 +20,21 @@ class IdeaController extends Controller
      */
     public function index(): View
     {
+        $validStatyses = IdeaStatus::values();
+        $validated = request()->validate([
+            'status' => ['nullable', Rule::in($validStatyses)],
+        ]);
+
         $user = Auth::user();
         $ideas = $user
             ->ideas()
             ->latest()
-            ->when(request('status'), fn ($query, $status) => $query->where('status', strtolower(trim($status))))
+            ->when($validated['status'] ?? null, fn ($query, $status) => $query->where('status', strtolower(trim($status))))
             ->paginate(20);
-
-        $counts = $user
-            ->ideas()
-            ->selectRaw('status, COUNT(*) as count, SUM(COUNT(*)) OVER () as total_count')
-            ->groupBy('status')
-            ->get();
-
-        $totalCount = (int) ($counts->first()?->total_count ?? 0);
-
-        $statusCounts = collect(IdeaStatus::cases())
-            ->mapWithKeys(fn (IdeaStatus $status) => [
-                $status->value => (int) ($counts->firstWhere('status', $status->value)?->count ?? 0),
-            ]);
 
         return view('ideas.index', [
             'ideas' => $ideas,
-            'totalCount' => $totalCount,
-            'statusCounts' => $statusCounts,
+            'statusCounts' => $user->statusCounts()
         ]);
     }
 

@@ -5,7 +5,7 @@
             <p class="text-muted-foreground text-sm mt-2">Capture your throughts, Make a plan.</p>
         </header>
 
-        <x-ideas.status-filter :statusCounts="$statusCounts" :totalCount="$totalCount" />
+        <x-ideas.status-filter :statusCounts="$statusCounts" />
 
         <div class="mt-10 text-muted-foreground">
             @if ($ideas->isNotEmpty())
