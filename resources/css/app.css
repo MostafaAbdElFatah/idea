@@ -10,26 +10,63 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
-/* Status badge colors are built dynamically in Blade (bg-{color}-500/10, etc.),
-   so Tailwind cannot detect them. Safelist every color returned by IdeaStatus::color(). */
+/* Status badge colors are built dynamically in Blade. */
 @source inline("{bg,border,text}-{yellow,blue,green,teal,orange,gray,amber,red}-500/{10,20}");
 @source inline("text-{yellow,blue,green,teal,orange,gray,amber,red}-500");
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        'Instrument Sans',
+        ui-sans-serif,
+        system-ui,
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji';
 
+    /* Base */
     --color-background: oklch(0.12 0 0);
     --color-foreground: oklch(0.95 0 0);
+
+    /* Surfaces */
     --color-card: oklch(0.16 0 0);
+
+    /* Brand */
     --color-primary: oklch(0.65 0.15 160);
     --color-primary-foreground: oklch(0.12 0 0);
+
+    /* UI */
     --color-border: oklch(0.24 0 0);
     --color-input: oklch(0.24 0 0);
     --color-muted-foreground: oklch(0.6 0 0);
 
+    /* Semantic */
     --color-error: oklch(0.65 0.2 25);
     --color-warning: oklch(0.75 0.15 75);
     --color-info: oklch(0.65 0.15 250);
     --color-success: oklch(0.7 0.17 155);
+}
+
+/* Custom dropdown scrollbar */
+.dropdown-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.30 0 0) transparent;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar-thumb {
+    background: oklch(0.30 0 0);
+    border-radius: 9999px;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.40 0 0);
 }

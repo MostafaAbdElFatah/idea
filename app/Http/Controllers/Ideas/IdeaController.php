@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ideas;
 
-use App\Models\Idea;
+use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreideaRequest;
 use App\Http\Requests\UpdateideaRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Idea;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class IdeaController extends Controller
 {
@@ -18,16 +19,30 @@ class IdeaController extends Controller
      */
     public function index(): View
     {
-       
-
-        $ideas = Auth::user()
+        $user = Auth::user();
+        $ideas = $user
             ->ideas()
             ->latest()
             ->when(request('status'), fn ($query, $status) => $query->where('status', strtolower(trim($status))))
             ->paginate(20);
 
+        $counts = $user
+            ->ideas()
+            ->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status');
+
+        $statusCounts = collect(IdeaStatus::cases())
+            ->mapWithKeys(fn (IdeaStatus $status) => [
+                $status->value => (int) ($counts[$status->value] ?? 0),
+            ]);
+
+
+            DD($statusCounts);
+
         return view('ideas.index', [
-            'ideas' => $ideas
+            'ideas' => $ideas,
+            'statusCounts' => $statusCounts,
         ]);
     }
 
@@ -53,7 +68,7 @@ class IdeaController extends Controller
     public function show(Idea $idea): View
     {
         return view('ideas.show', [
-            'idea' => $idea
+            'idea' => $idea,
         ]);
     }
 

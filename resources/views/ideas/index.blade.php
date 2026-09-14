@@ -2,10 +2,10 @@
     <div>
         <header class="py-8 md:py-12">
             <h1 class="text-3xl font-bold">Ideas</h1>
-            <p class="text-muted-foreground text-sm mt-2 mb-10">Capture your throughts, Make a plan.</p>
+            <p class="text-muted-foreground text-sm mt-2">Capture your throughts, Make a plan.</p>
         </header>
 
-        <x-ideas.status-filter />
+        <x-ideas.status-filter :statusCounts="$statusCounts" />
 
         <div class="mt-10 text-muted-foreground">
             @if ($ideas->isNotEmpty())
