@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SessionsController;
+use App\Http\Controllers\Ideas\IdeaController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', fn () => view('welcome'))
-    ->name('home');
-
-
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])
@@ -23,6 +19,18 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
     Route::delete('/logout', [SessionsController::class, 'destroy'])
         ->name('logout');
+
+    Route::redirect('/', '/ideas')
+        ->name('home');
+
+    Route::get('/ideas', [IdeaController::class, 'index'])
+        ->name('ideas');
+
+    Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
+        ->name('idea.show');
+        
+
 });

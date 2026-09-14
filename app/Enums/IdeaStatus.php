@@ -30,4 +30,19 @@ enum IdeaStatus: string
             self::ARCHIVED => 'Archived'
         };
     }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::PENDING => 'yellow',
+            self::IN_PROGRESS => 'blue',
+            self::ACTIVE => 'green',
+            self::COMPLETED => 'teal',
+            self::INCOMPLETED => 'orange',
+            self::DRAFT => 'gray',
+            self::PAUSED => 'amber',
+            self::CANCELLED => 'red',
+            self::ARCHIVED => 'purple',
+        };
+    }
 }

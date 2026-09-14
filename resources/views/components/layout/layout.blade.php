@@ -12,7 +12,7 @@
 <body class="bg-background text-foreground">
 
     <x-layout.nav />
-    <main class="min-h-[calc(100vh-4rem)] max-w-6xl mx-auto">
+    <main class="min-h-[calc(100vh-4rem)] max-w-6xl mx-auto px-12">
         {{ $slot }}
     </main>
     <x-layout.success-message />
