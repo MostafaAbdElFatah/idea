@@ -1,4 +1,4 @@
-@props([ 'statusCounts' ])
+@props([ 'statusCounts', 'totalCount' => null ])
 @php
     $statusOptions = collect(\App\Enums\IdeaStatus::cases())
         ->map(fn ($status) => [
@@ -27,6 +27,7 @@
                     :options="$statusOptions"
                     :selected="strtolower(trim(request('status', '')))"
                     placeholder="All statuses"
+                    :total="$totalCount"
                     :submit-on-change="true"
                 />
             </div>

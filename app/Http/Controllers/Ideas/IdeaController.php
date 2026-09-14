@@ -28,20 +28,20 @@ class IdeaController extends Controller
 
         $counts = $user
             ->ideas()
-            ->selectRaw('status, COUNT(*) as count')
+            ->selectRaw('status, COUNT(*) as count, SUM(COUNT(*)) OVER () as total_count')
             ->groupBy('status')
-            ->pluck('count', 'status');
+            ->get();
+
+        $totalCount = (int) ($counts->first()?->total_count ?? 0);
 
         $statusCounts = collect(IdeaStatus::cases())
             ->mapWithKeys(fn (IdeaStatus $status) => [
-                $status->value => (int) ($counts[$status->value] ?? 0),
+                $status->value => (int) ($counts->firstWhere('status', $status->value)?->count ?? 0),
             ]);
-
-
-            DD($statusCounts);
 
         return view('ideas.index', [
             'ideas' => $ideas,
+            'totalCount' => $totalCount,
             'statusCounts' => $statusCounts,
         ]);
     }

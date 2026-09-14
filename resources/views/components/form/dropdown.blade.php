@@ -4,6 +4,7 @@
 'selected' => null,
 'placeholder' => 'Select an option',
 'submitOnChange' => false,
+'total' => null,
 ])
 
 @php
@@ -25,7 +26,7 @@ $hasCounts = $normalized->contains(fn ($option) => ! is_null($option['count']));
 
 $countsMap = $normalized->mapWithKeys(fn ($option) => [$option['value'] => $option['count']]);
 
-$totalCount = $normalized->sum('count');
+$totalCount = $total ?? $normalized->sum('count');
 @endphp
 
 <div x-data="{
@@ -73,17 +74,12 @@ $totalCount = $normalized->sum('count');
 
         <span class="flex shrink-0 items-center gap-2.5">
             @if ($hasCounts)
-                <span
-                    x-show="selectedCount != null"
-                    x-text="selectedCount"
-                    class="rounded-full bg-white/8 px-2 py-0.5 text-xs
-                           font-semibold tabular-nums text-muted-foreground"
-                ></span>
+            <span x-show="selectedCount != null" x-text="selectedCount" class="rounded-full bg-white/8 px-2 py-0.5 text-xs
+                           font-semibold tabular-nums text-muted-foreground"></span>
             @endif
 
             <svg class="h-4 w-4 text-muted-foreground transition-transform duration-200"
-                :class="{ 'rotate-180 text-primary': open }" viewBox="0 0 20 20"
-                fill="currentColor" aria-hidden="true">
+                :class="{ 'rotate-180 text-primary': open }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd"
                     d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 1.04l-4.25-4.5a.75.75 0 01.02-1.06z"
                     clip-rule="evenodd" />
@@ -115,17 +111,21 @@ $totalCount = $normalized->sum('count');
 
                 <span class="flex shrink-0 items-center gap-3">
                     @if ($hasCounts)
-                        <span class="text-xs tabular-nums text-muted-foreground">
-                            {{ $totalCount }}
-                        </span>
+                    <span class="text-xs tabular-nums text-muted-foreground">
+                        {{ $totalCount }}
+                    </span>
                     @endif
 
-                    <svg x-show="value === ''" class="h-4 w-4 shrink-0 text-primary" viewBox="0 0 20 20"
-                        fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd"
-                            d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.408 0l-4-4a1 1 0 011.408-1.42L8.5 12.086l6.796-6.796a1 1 0 011.408 0z"
-                            clip-rule="evenodd" />
+                    <svg class="h-4 w-4 shrink-0 text-primary opacity-0 transition-opacity duration-150"
+                        :class="value === '' ? 'opacity-100' : 'opacity-0'" viewBox="0 0 20 20" fill="currentColor"
+                        aria-hidden="true                     viewBox=" 0 0 20 20" ">
+
+                        <path fill-rule=" evenodd"
+                        d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.408 0l-4-4a1 1 0 011.408-1.42L8.5 12.086l6.796-6.796a1 1 0 011.408 0z"
+                        clip-rule="evenodd" />
                     </svg>
+
+
                 </span>
             </button>
 
