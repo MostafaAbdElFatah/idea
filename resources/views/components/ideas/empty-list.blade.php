@@ -1,6 +1,6 @@
 @props([
 'filtered' => false,
-'state' => null,
+'status' => null,
 ])
 
 <div class="flex min-h-[calc(70vh-4rem)] items-center justify-center px-4">
@@ -19,8 +19,8 @@
 
             <p class="text-xs text-base-content/60">
                 There are no ideas with the
-                <span class="font-medium text-base-content">{{ $state }}</span>
-                state.
+                <span class="font-medium text-base-content">{{ $status }}</span>
+                status.
             </p>
 
             <a href="/" class="btn btn-primary btn-sm mt-2">

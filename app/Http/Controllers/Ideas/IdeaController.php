@@ -18,9 +18,13 @@ class IdeaController extends Controller
      */
     public function index(): View
     {
+       
+
         $ideas = Auth::user()
             ->ideas()
-            ->get();
+            ->latest()
+            ->when(request('status'), fn ($query, $status) => $query->where('status', strtolower(trim($status))))
+            ->paginate(20);
 
         return view('ideas.index', [
             'ideas' => $ideas

@@ -1,4 +1,4 @@
-@props([ 'key' => 'success']);
+@props([ 'key' => 'success'])
 
 @if (session($key))
 <div 
