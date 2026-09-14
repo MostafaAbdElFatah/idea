@@ -75,9 +75,11 @@
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ],
         "format": [
-            "vendor/bin/rector",
-            "vendor/bin/pint"
+            "@pint",
+            "@rector"
         ],
+        "pint": "vendor/bin/pint",
+        "rector": "vendor/bin/rector",
         "test:unit": "pest --testsuite=Unit --parallel",
         "test:feature": "pest --testsuite=Feature --parallel",
         "test:browser": "pest --testsuite=Browser",

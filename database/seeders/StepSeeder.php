@@ -13,19 +13,19 @@ class StepSeeder extends Seeder
      */
     public function run(): void
     {
-        
-        //fetch all ids
+
+        // fetch all ids
         $ideaIds = Idea::pluck('id')->toArray();
 
-        ///random idea_Id in each record in 3000 record
+        // /random idea_Id in each record in 3000 record
         Step::factory()
             ->count(3000)
-            ->state(fn() => [
+            ->state(fn () => [
                 'idea_id' => fake()->randomElement($ideaIds),
             ])
             ->create();
 
-        ///same idea_Id in all 3000 record
+        // /same idea_Id in all 3000 record
         // Step::factory()->count(3000)->create([
         //     'idea_id' => fake()->randomElement($userIds),
         // ]);

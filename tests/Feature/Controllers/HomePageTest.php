@@ -19,7 +19,7 @@ describe('home page', function (): void {
     });
 
     it('advertises the login and register routes to guests', function (): void {
-        get('/')->assertSee('href="/login"', false)->assertSee('href="/register"', false);
+        get('/')->assertSeeHtml('href="/login"')->assertSeeHtml('href="/register"');
     });
 
     it('returns 404 for unknown paths', function (): void {

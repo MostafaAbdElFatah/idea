@@ -6,7 +6,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\IdeaStatus;
-use App\Models\Idea;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -36,7 +35,6 @@ class User extends Authenticatable
         ];
     }
 
-
     public function ideas(): HasMany
     {
         return $this->hasMany(Idea::class);
@@ -46,7 +44,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Step::class);
     }
-
 
     public function statusCounts(): Collection
     {
@@ -63,5 +60,4 @@ class User extends Authenticatable
             ])
             ->put('all', $totalCount);
     }
-    
 }

@@ -31,6 +31,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.show');
-        
 
 });

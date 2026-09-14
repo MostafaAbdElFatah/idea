@@ -34,7 +34,7 @@ class IdeaController extends Controller
 
         return view('ideas.index', [
             'ideas' => $ideas,
-            'statusCounts' => $user->statusCounts()
+            'statusCounts' => $user->statusCounts(),
         ]);
     }
 

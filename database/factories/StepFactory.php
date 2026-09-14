@@ -20,7 +20,7 @@ class StepFactory extends Factory
     {
         return [
             'idea_id' => Idea::factory(),
-            //'idea_id' => Idea::inRandomOrder()->value('id'),
+            // 'idea_id' => Idea::inRandomOrder()->value('id'),
             'description' => fake()->sentence(),
             'completed' => fake()->boolean(),
         ];
@@ -28,14 +28,14 @@ class StepFactory extends Factory
 
     public function completed(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'completed' => true,
         ]);
     }
 
     public function incomplete(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'completed' => false,
         ]);
     }

@@ -18,13 +18,13 @@ enum IdeaStatus: string
 
     public static function values(): array
     {
-        //return array_column(IdeaStatus::cases(), 'value');
-        return array_map(fn($status) => $status->value, static::cases());
+        // return array_column(IdeaStatus::cases(), 'value');
+        return array_map(fn (IdeaStatus $status) => $status->value, self::cases());
     }
 
     public static function has(string $value): bool
     {
-        return in_array(strtolower(trim($value)), static::values);
+        return in_array(strtolower(trim($value)), self::values);
     }
 
     public function label(): string
