@@ -70,3 +70,7 @@
 .dropdown-scrollbar::-webkit-scrollbar-thumb:hover {
     background: oklch(0.40 0 0);
 }
+
+[x-cloak] {
+    display: none !important;
+}

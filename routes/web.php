@@ -27,9 +27,12 @@ Route::middleware('auth')->group(function () {
         ->name('home');
 
     Route::get('/ideas', [IdeaController::class, 'index'])
-        ->name('ideas');
+        ->name('ideas.index');
 
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.show');
-
+    Route::patch('/ideas/{idea}', [IdeaController::class, 'show'])
+        ->name('idea.edit');
+     Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])
+        ->name('idea.delete');
 });

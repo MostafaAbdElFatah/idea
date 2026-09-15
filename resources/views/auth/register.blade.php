@@ -1,5 +1,5 @@
 <x-layout>
-    <x-form action="{{ route('register.store') }}" method="POST" title="Register an account"
+    <x-form.container action="{{ route('register.store') }}" method="POST" title="Register an account"
         description="Start tracking your ideas today">
 
         <div class="grid gap-5 sm:grid-cols-2">

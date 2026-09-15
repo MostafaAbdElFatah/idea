@@ -10,6 +10,7 @@ use App\Http\Requests\StoreideaRequest;
 use App\Http\Requests\UpdateideaRequest;
 use App\Models\Idea;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
@@ -77,14 +78,18 @@ class IdeaController extends Controller
      */
     public function update(UpdateideaRequest $request, Idea $idea): View
     {
-        //
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Idea $idea): View
+    public function destroy(Idea $idea): RedirectResponse
     {
-        //
+        $idea->delete();
+
+        return redirect()
+            ->route('ideas.index')
+            ->with('success', 'Idea deleted successfully.');
     }
 }

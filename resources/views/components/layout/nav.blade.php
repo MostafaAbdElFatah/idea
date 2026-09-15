@@ -8,14 +8,9 @@
 
         <div class="flex items-center gap-2">
             @auth
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                @method('DELETE')
 
-                <button type="submit" class="btn btn-outlined">
-                    Logout
-                </button>
-            </form>
+            <x-layout.button action="{{ route('logout') }}" method="DELETE" title="Logout" />
+
             @else
             <a href="/login" class="btn btn-outlined">
                 Login
