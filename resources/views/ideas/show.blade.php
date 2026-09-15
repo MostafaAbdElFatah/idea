@@ -4,8 +4,8 @@
             <x-layout.link :route="route('ideas.index', $idea)" icon="arrow-back" title="Back to Ideas" />
             <div class="flex items-center space-x-4">
 
-                <x-layout.button  :action="route('idea.edit', $idea)" icon="arrow-back" title="Edit Idea" icon='external' :width=16
-                    height=16 />
+                <x-layout.button :action="route('idea.edit', $idea)" icon="arrow-back" title="Edit Idea" icon='external'
+                    :width=16 height=16 />
 
                 <x-layout.button type="button" @click="deleteDialogOpen = true" title="Delete" icon="trash" :width="16"
                     :height="16" class="text-red-500" />
@@ -23,17 +23,20 @@
             </div>
         </x-layout.card>
 
+        @if ($idea->links->count())
         <div>
             <h3 class="font-bold text-xl mt-6">Links</h3>
-            <div>
+            <div class="mt-3 space-y-3">
                 @foreach ($idea->links as $link)
-                
+
                 <x-layout.card>
-                     <x-layout.link :route="$link" :title="$link"  icon="external" width=18 height=18 />
+                    <x-layout.link :route="$link" :title="$link" icon="external" width=18 height=18
+                        class="text-primary font-medium flex gap-x-3 items-center" />
                 </x-layout.card>
                 @endforeach
             </div>
         </div>
+        @endif
 
 
 

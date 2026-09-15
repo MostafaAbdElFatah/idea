@@ -1,6 +1,6 @@
 @props(['width' => 24, 'height' => 24])
-<svg width={{ $width }} height={{ $height }} fill="#ffffff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-    stroke="#ffffff">
+<svg width={{ $width }} height={{ $height }} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor">
     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
     <g id="SVGRepo_iconCarrier">
