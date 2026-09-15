@@ -1,9 +1,11 @@
 @props([
-'icon',
+'icon' => null,
 'title',
 'width' => null,
 'height' => null,
 ])
 
-<x-dynamic-component :component="'icons.' . $icon" :width="$width" :height="$height" />
+@if ($icon)
+    <x-dynamic-component :component="'icons.' . $icon" :width="$width" :height="$height" />
+@endif
 {{ $title }}

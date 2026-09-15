@@ -1,7 +1,7 @@
 <x-layout>
     <div class="py-8 max-w-4xl mx-auto" x-data="{ deleteDialogOpen: false }">
         <div class="flex justify-between items-center">
-            <x-layout.link :route="route('ideas.index', $idea)" title="Back to Ideas" />
+            <x-layout.link :route="route('ideas.index', $idea)" icon="arrow-back" title="Back to Ideas" />
             <div class="flex items-center space-x-4">
 
                 <x-layout.button  :action="route('idea.edit', $idea)" icon="arrow-back" title="Edit Idea" icon='external' :width=16
@@ -29,8 +29,7 @@
                 @foreach ($idea->links as $link)
                 
                 <x-layout.card>
-                   
-                     <x-layout.link :route="$link" :title="$link"  icon="external" />
+                     <x-layout.link :route="$link" :title="$link"  icon="external" width=18 height=18 />
                 </x-layout.card>
                 @endforeach
             </div>
