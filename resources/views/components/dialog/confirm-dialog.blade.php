@@ -2,7 +2,7 @@
 'title' => null,
 'message' => null,
 'method' => null,
-'confirmClass' = '',
+'confirmClass' => '',
 'confirmLabel',
 'action',
 'state'
@@ -37,19 +37,7 @@
                 Cancel
             </button>
 
-
-            <x-layout.button :action="$action" :method="$method" title="Edit Idea" icon='trash' :width=16 height=16 />
-
-
-            <form action="{{ $action }}" method="POST">
-                @csrf
-                @method('DELETE')
-
-                <button type="submit" class="$confromClass">
-                    {{ $confirmLabel }}
-                </button>
-            </form>
-
+            <x-layout.button :action="$action" :method="$method" :class="$confirmClass" title="Edit Idea" :width=16 height=16 />
         </div>
     </div>
 </div>
