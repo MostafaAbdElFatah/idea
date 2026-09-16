@@ -11,7 +11,7 @@
 @endphp
 
 <div class="mt-6">
-    <form method="GET" action="{{ route('ideas.index') }}">
+    <form method="GET" action="{{ route('idea.index') }}">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
 
             {{-- Status Filter --}}
@@ -36,7 +36,7 @@
             {{-- Active Filter --}}
             @if (request('status'))
                 <a
-                    href="{{ route('ideas.index') }}"
+                    href="{{ route('idea.index') }}"
                     class="group mx-2 inline-flex h-11 items-center gap-2 rounded-xl
                            border border-white/10 bg-white/4 px-4
                            text-sm font-medium text-gray-400

@@ -1,15 +1,15 @@
 @props([
-'method' => 'POST',
-'action',
+    'method' => 'POST',
+    'action',
 ])
 
 @php
-$statusOptions = collect(\App\Enums\IdeaStatus::cases())
-->map(fn ($status) => [
-'value' => $status->value,
-'label' => $status->label(),
-])
-->all();
+    $statusOptions = collect(\App\Enums\IdeaStatus::cases())
+        ->map(fn ($status) => [
+        'value' => $status->value,
+        'label' => $status->label(),
+        ])
+        ->all();
 @endphp
 
 
@@ -33,7 +33,7 @@ $statusOptions = collect(\App\Enums\IdeaStatus::cases())
 
         <div class="mt-6 flex justify-end gap-3">
 
-            <button type="button" @click="show = false" class="btn btn-outlined">
+            <button type="button" class="btn btn-outlined">
                 Cancel
             </button>
 

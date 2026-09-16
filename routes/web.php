@@ -27,9 +27,9 @@ Route::middleware('auth')->group(function () {
         ->name('home');
 
     Route::get('/ideas', [IdeaController::class, 'index'])
-        ->name('ideas.index');
+        ->name('idea.index');
     Route::post('/ideas', [IdeaController::class, 'store'])
-        ->name('ideas.store');
+        ->name('idea.store');
 
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.show');

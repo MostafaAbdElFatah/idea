@@ -5,8 +5,13 @@
             <p class="text-muted-foreground text-sm mt-2">Capture your throughts, Make a plan.</p>
         </header>
 
-        <x-layout.card tag="button" type="button" x-data @click="$dispatch('open-model', 'create-idea')"
-            class="cursor-pointer h-32 w-full text-start">
+        <x-layout.card 
+            tag="button" 
+            type="button" 
+            x-data 
+            @click="$dispatch('open-model', 'create-idea')"
+            class="cursor-pointer h-32 w-full text-start"
+        >
             <p>What's the idea?</p>
         </x-layout.card>
 
@@ -24,7 +29,7 @@
             @endif
         </div>
 
-        <x-idea.upsert action="{{ route('ideas.store') }}" />
+        <x-idea.upsert action="{{ route('idea.store') }}" />
 
     </div>
 </x-layout>

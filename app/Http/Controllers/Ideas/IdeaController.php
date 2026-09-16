@@ -32,7 +32,7 @@ class IdeaController extends Controller
             ->when($validated['status'] ?? null, fn ($query, $status) => $query->where('status', strtolower(trim($status))))
             ->paginate(20);
 
-        return view('ideas.index', [
+        return view('idea.index', [
             'ideas' => $ideas,
             'statusCounts' => $user->statusCounts(),
         ]);
@@ -41,9 +41,15 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIdeaRequest $request): View
+    public function store(StoreIdeaRequest $request): RedirectResponse
     {
-        dd('persist the idea.');
+        $idea = $request->user()->ideas()->create(
+            $request->validated()
+        );
+
+        return redirect()
+            ->route('idea.show', $idea)
+            ->with('success', 'Idea created successfully.');
     }
 
     /**
@@ -51,7 +57,7 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea): View
     {
-        return view('ideas.show', [
+        return view('idea.show', [
             'idea' => $idea,
         ]);
     }
@@ -59,7 +65,7 @@ class IdeaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Idea $idea): View
+    public function edit(Idea $idea): RedirectResponse
     {
         return redirect()->back()->withErrors($validator)->withInput();
     }
@@ -72,7 +78,7 @@ class IdeaController extends Controller
         $idea->delete();
 
         return redirect()
-            ->route('ideas.index')
+            ->route('idea.index')
             ->with('success', 'Idea deleted successfully.');
     }
 }

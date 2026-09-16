@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\IdeaStatus;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class StoreIdeaRequest extends FormRequest
 {
@@ -16,7 +20,22 @@ class StoreIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'min:3','max:255'],
+            'description' => ['nullable', 'required', 'string' ],
+            'status' => ['nullable', Rule::enum(IdeaStatus::class)],
         ];
+    }
+
+        /**
+     * Handle a failed validation attempt.
+     */
+    protected function failedValidation(Validator $validator): void
+    {
+        throw new HttpResponseException(
+            back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('open_modal', 'create-idea')
+        );
     }
 }
