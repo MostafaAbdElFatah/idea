@@ -40,7 +40,7 @@ $statusOptions = collect(\App\Enums\IdeaStatus::cases())
             <button type="submit" class="btn">
                 Create
             </button>
-
+            
         </div>
     </x-form>
 </x-dialog>
