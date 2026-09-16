@@ -11,6 +11,14 @@ use Illuminate\Validation\Rules\Password;
 class StoreRegisterRequest extends FormRequest
 {
     /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return $this->user() === null;
+    }
+
+    /**
      * Prepare the data for validation.
      */
     protected function prepareForValidation(): void

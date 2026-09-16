@@ -5,28 +5,37 @@ declare(strict_types=1);
 use function Pest\Laravel\get;
 
 describe('home page', function (): void {
-    it('renders for guests', function (): void {
-        get('/')
-            ->assertOk()
-            ->assertViewIs('welcome')
-            ->assertSee(config('app.name'));
+    it('redirects guests to the login page', function (): void {
+        get('/')->assertRedirect(route('login'));
     });
 
-    it('renders for authenticated users', function (): void {
+    it('redirects authenticated users to their ideas', function (): void {
         loginAs();
 
-        get('/')->assertOk()->assertViewIs('welcome');
+        get('/')->assertRedirect('/ideas');
     });
 
-    it('advertises the login and register routes to guests', function (): void {
-        get('/')->assertSeeHtml('href="/login"')->assertSeeHtml('href="/register"');
+    it('links guests between the login and register pages', function (): void {
+        get(route('login'))->assertOk()->assertSeeHtml('href="/register"');
     });
 
     it('returns 404 for unknown paths', function (): void {
         get('/does-not-exist')->assertNotFound();
     });
 
-    it('does not expose the unrouted idea endpoints', function (string $path): void {
-        get($path)->assertNotFound();
-    })->with(['/ideas', '/ideas/1', '/steps', '/steps/1']);
+    it('requires authentication for idea endpoints', function (string $path): void {
+        get($path)->assertRedirect(route('login'));
+    })->with(['/ideas', '/ideas/1']);
+
+    it('does not expose a step index', function (): void {
+        loginAs();
+
+        get('/steps')->assertNotFound();
+    });
+
+    it('only accepts PATCH requests for a step', function (): void {
+        loginAs();
+
+        get('/steps/1')->assertMethodNotAllowed();
+    });
 })->group('feature', 'controllers');

@@ -11,6 +11,7 @@ use App\Models\Idea;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class IdeaController extends Controller
@@ -76,6 +77,8 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea): View
     {
+        Gate::authorize('view', $idea);
+
         return view('idea.show', [
             'idea' => $idea,
         ]);
@@ -94,6 +97,8 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea): RedirectResponse
     {
+        Gate::authorize('delete', $idea);
+
         $idea->delete();
 
         return redirect()

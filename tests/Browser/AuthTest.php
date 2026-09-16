@@ -30,7 +30,7 @@ describe('authentication flow', function (): void {
             ->fill('password', 'password123')
             ->fill('password_confirmation', 'password123')
             ->click('create Account')
-            ->assertPathIs('/')
+            ->assertPathIs('/ideas')
             ->assertNoJavascriptErrors();
 
         expect(User::where('email', 'jane@example.com')->exists())->toBeTrue();
@@ -45,7 +45,7 @@ describe('authentication flow', function (): void {
         visit(route('login'))
             ->fill('email', 'jane@example.com')
             ->fill('password', 'wrong-password')
-            ->click('create Account')
+            ->click('Sign In')
             ->assertPathIs('/login')
             ->assertSee('These credentials do not match our records.');
     });
@@ -59,8 +59,8 @@ describe('authentication flow', function (): void {
         visit(route('login'))
             ->fill('email', 'jane@example.com')
             ->fill('password', 'password123')
-            ->click('create Account')
-            ->assertPathIs('/')
+            ->click('Sign In')
+            ->assertPathIs('/ideas')
             ->assertNoJavascriptErrors();
     });
 })->group('browser');

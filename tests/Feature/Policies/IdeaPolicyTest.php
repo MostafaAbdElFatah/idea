@@ -14,20 +14,27 @@ describe('IdeaPolicy integration', function (): void {
         expect(Gate::getPolicyFor(Idea::class))->toBeInstanceOf(IdeaPolicy::class);
     });
 
-    it('denies class abilities through the gate', function (string $ability): void {
+    it('allows class abilities through the gate', function (string $ability): void {
         $user = User::factory()->create();
 
-        expect(Gate::forUser($user)->denies($ability, Idea::class))->toBeTrue();
+        expect(Gate::forUser($user)->allows($ability, Idea::class))->toBeTrue();
     })->with('class abilities');
 
-    it('denies model abilities through the gate for the owner and others', function (string $ability): void {
+    it('allows the owner and denies others through the gate', function (string $ability): void {
         $owner = User::factory()->create();
         $other = User::factory()->create();
         $idea = Idea::factory()->for($owner)->create();
 
-        expect(Gate::forUser($owner)->denies($ability, $idea))->toBeTrue()
+        expect(Gate::forUser($owner)->allows($ability, $idea))->toBeTrue()
             ->and(Gate::forUser($other)->denies($ability, $idea))->toBeTrue();
-    })->with('model abilities');
+    })->with(['view', 'update', 'delete']);
+
+    it('denies restore and force delete through the gate', function (string $ability): void {
+        $owner = User::factory()->create();
+        $idea = Idea::factory()->for($owner)->create();
+
+        expect(Gate::forUser($owner)->denies($ability, $idea))->toBeTrue();
+    })->with(['restore', 'forceDelete']);
 
     it('denies guests', function (): void {
         $idea = Idea::factory()->create();

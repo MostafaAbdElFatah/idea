@@ -21,6 +21,11 @@
             <directory>tests/Stress</directory>
         </testsuite>
     </testsuites>
+    <groups>
+        <exclude>
+            <group>stress</group>
+        </exclude>
+    </groups>
     <source>
         <include>
             <directory>app</directory>

@@ -114,3 +114,25 @@ describe('creating steps with an idea', function (): void {
         expect(Idea::query()->count())->toBe(0);
     });
 })->group('feature', 'controllers');
+
+describe('viewing and deleting an idea', function (): void {
+    it('lets the owner view and delete their idea', function (): void {
+        $user = loginAs();
+        $idea = Idea::factory()->for($user)->create();
+
+        $this->get(route('idea.show', $idea))->assertOk();
+        $this->delete(route('idea.delete', $idea))->assertRedirect(route('idea.index'));
+
+        expect(Idea::query()->count())->toBe(0);
+    });
+
+    it('hides an idea from other users', function (): void {
+        $idea = Idea::factory()->create();
+        loginAs();
+
+        $this->get(route('idea.show', $idea))->assertNotFound();
+        $this->delete(route('idea.delete', $idea))->assertNotFound();
+
+        expect($idea->fresh())->not->toBeNull();
+    });
+})->group('feature', 'controllers');

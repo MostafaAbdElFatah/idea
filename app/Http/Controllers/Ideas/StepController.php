@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Ideas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Step;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StepController extends Controller
 {
@@ -57,7 +57,9 @@ class StepController extends Controller
      */
     public function update(Request $request, Step $step): RedirectResponse
     {
-        $step->update(['completed' => !$step->completed ]);
+        Gate::authorize('update', $step);
+
+        $step->update(['completed' => ! $step->completed]);
 
         return back()
             ->with('success', 'Step updated successfully.');
