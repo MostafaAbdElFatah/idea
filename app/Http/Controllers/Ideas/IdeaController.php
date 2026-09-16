@@ -43,6 +43,7 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request): RedirectResponse
     {
+        //dd($request->all());
         $idea = $request->user()->ideas()->create(
             $request->validated()
         );

@@ -14,7 +14,12 @@
 
 
 <x-dialog name="create-idea" title="New idea">
-    <x-form :action="$action" :method="$method" class="dropdown-scrollbar max-h-[90dvh] overflow-y-auto p-1 space-y-6">
+    <x-form
+        :action="$action"
+        :method="$method"
+        class="dropdown-scrollbar max-h-[90dvh] overflow-y-auto p-1 space-y-6"
+        x-data="ideaLinks()"
+    >
         <x-form.input autofacus label="Title" name="title" placeholder="Enter a title for your idea" />
 
         <x-form.input autofacus label="Description" name="description" type="textarea"
@@ -30,6 +35,60 @@
         </div>
 
         <x-form.input autofacus label="Image" name="image" type="file" placeholder="Enter a title for your idea" :required="false"/>
+
+        <div class="space-y-3">
+            <label for="url" class="label">Links</label>
+
+            <div class="flex gap-x-3">
+                <input
+                    id="url"
+                    type="url"
+                    x-model="url"
+                    x-ref="url"
+                    @input="urlError = ''"
+                    autocomplete="url"
+                    spellcheck="false"
+                    @keydown.enter.prevent="addLink()"
+                    placeholder="https://example.com"
+                    class="input min-w-0 flex-1"
+                >
+
+                <button
+                    type="button"
+                    class="btn btn-outlined"
+                    @click="addLink()"
+                    :disabled="!url.trim()"
+                    aria-label="Add link"
+                >
+                    <x-icons.close class="rotate-45 form-muted-icon" />
+                </button>
+            </div>
+
+            <p x-cloak x-show="urlError" x-text="urlError" class="text-sm text-error"></p>
+
+            <template x-for="(link, index) in links" :key="link">
+                <div class="flex items-center justify-between gap-x-3 py-2">
+                    <a 
+                        :href="link" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="input min-w-0 flex-1 truncate text-sm text-primary hover:underline"
+                        x-text="link"></a>
+
+                    <input type="hidden" name="links[]" :value="link">
+
+                    <button 
+                        type="button" 
+                        class="btn btn-outlined"
+                        @click="removeLink(index)" 
+                        :aria-label="`Remove ${link}`">
+                        <x-icons.close class="form-muted-icon" />
+                    </button>
+                </div>
+            </template>
+
+            <x-form.error name="links" />
+        </div>
 
         <div class="mt-6 flex justify-end gap-3">
 

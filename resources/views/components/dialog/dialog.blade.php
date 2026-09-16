@@ -8,6 +8,7 @@
     }" 
     x-cloak 
     x-show="show" 
+    x-effect="document.body.classList.toggle('overflow-hidden', show)"
     x-transition:enter="ease-out duration-200"
     x-transition:enter-start="opacity-0 -translate-y-4 -translate-x-4" 
     x-transition:enter-end="opacity-100"
@@ -22,7 +23,9 @@
     :aria-hidden="!show" 
     tabindex="-1">
 
-    <x-layout.card @click.outside="show = false" class="shadow-wl max-w-2xl w-full max-h-[80dvh] overflow-auto">
+    <x-layout.card 
+        @click.outside="show = false" 
+        class="shadow-wl max-w-2xl w-full max-h-[80dvh] overflow-auto dropdown-scrollbar  overscroll-contain">
         <div class="flex justify-between">
             <h2 id="model-@js($name)-title" class="text-xl font-bold">{{ $title }}</h2>
             <button @click="show = false" aria-label="close button">

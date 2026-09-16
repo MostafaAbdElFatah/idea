@@ -1,32 +1,32 @@
 @props([
-'name',
-'options' => [],
-'selected' => null,
-'placeholder' => 'Select an option',
-'submitOnChange' => false,
-'total' => null,
+    'name',
+    'options' => [],
+    'selected' => null,
+    'placeholder' => 'Select an option',
+    'submitOnChange' => false,
+    'total' => null,
 ])
 
 @php
-$normalized = collect($options)
-->map(fn ($option) => [
-'value' => (string) ($option['value'] ?? ''),
-'label' => (string) ($option['label'] ?? ''),
-'count' => $option['count'] ?? null,
-])
-->values();
+    $normalized = collect($options)
+        ->map(fn ($option) => [
+        'value' => (string) ($option['value'] ?? ''),
+        'label' => (string) ($option['label'] ?? ''),
+        'count' => $option['count'] ?? null,
+        ])
+        ->values();
 
-$selectedValue = (string) ($selected ?? '');
+    $selectedValue = (string) ($selected ?? '');
 
-$selectedOption = $normalized->firstWhere('value', $selectedValue);
+    $selectedOption = $normalized->firstWhere('value', $selectedValue);
 
-$selectedLabel = $selectedOption['label'] ?? $placeholder;
+    $selectedLabel = $selectedOption['label'] ?? $placeholder;
 
-$hasCounts = $normalized->contains(fn ($option) => ! is_null($option['count']));
+    $hasCounts = $normalized->contains(fn ($option) => ! is_null($option['count']));
 
-$countsMap = $normalized->mapWithKeys(fn ($option) => [$option['value'] => $option['count']]);
+    $countsMap = $normalized->mapWithKeys(fn ($option) => [$option['value'] => $option['count']]);
 
-$totalCount = $total ?? $normalized->sum('count');
+    $totalCount = $total ?? $normalized->sum('count');
 @endphp
 
 <div x-data="{
@@ -51,12 +51,17 @@ $totalCount = $total ?? $normalized->sum('count');
                 });
             @endif
         }
-    }" @keydown.escape.window="open = false" class="relative w-full">
+    }" 
+    @keydown.escape.window="open = false" class="relative w-full">
     {{-- Hidden form field --}}
     <input type="hidden" name="{{ $name }}" x-ref="field" :value="value">
 
     {{-- Trigger --}}
-    <button type="button" @click="open = !open" :aria-expanded="open" class="group flex w-full items-center justify-between
+    <button 
+        type="button" 
+        @click="open = !open" 
+        :aria-expanded="open" 
+        class="group flex w-full items-center justify-between
                gap-3 rounded-lg
                border border-border
                bg-card
@@ -88,10 +93,17 @@ $totalCount = $total ?? $normalized->sum('count');
     </button>
 
     {{-- Dropdown --}}
-    <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-150"
-        x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="opacity-0 -translate-y-1" @click.outside="open = false" class="absolute left-0 right-0 z-50 mt-2
+    <div 
+        x-show="open"
+        x-cloak
+        x-transition:enter="transition ease-out duration-150"
+        x-transition:enter-start="opacity-0 -translate-y-1"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-100" 
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-1" 
+        @click.outside="open = false" 
+        class="absolute left-0 right-0 z-50 mt-2
                overflow-hidden rounded-lg
                border border-border
                bg-card

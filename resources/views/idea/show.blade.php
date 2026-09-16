@@ -30,8 +30,15 @@
                 @foreach ($idea->links as $link)
 
                 <x-layout.card>
-                    <x-layout.link :route="$link" :title="$link" icon="external" width=18 height=18
-                        class="text-primary font-medium flex gap-x-3 items-center" />
+                                            
+                    <x-layout.link 
+                        target="_blank"  
+                        :route="$link" 
+                        :title="$link" 
+                        icon="external" 
+                        width=18 
+                        height=18
+                        class="text-primary font-medium flex gap-x-3 items-center truncate text-sm hover:underline" />
                 </x-layout.card>
                 @endforeach
             </div>
