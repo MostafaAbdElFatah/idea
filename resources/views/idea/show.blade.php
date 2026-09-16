@@ -23,6 +23,29 @@
             </div>
         </x-layout.card>
 
+        @if ($idea->steps->count())
+        <div>
+            <h3 class="mt-6 text-xl font-bold">Actionable Steps</h3>
+
+            <div class="mt-3 space-y-3">
+                @foreach ($idea->steps as $step)
+                <x-layout.card class="font-medium">
+                    <x-form :action="route('steps.update', $step)" method="PATCH">
+                        <div class="flex items-center gap-x-3">
+                            <button type="submit" role="checkbox"
+                                class="flex size-5 items-center justify-center rounded-sm text-primary-foreground {{ $step->completed ? 'bg-primary' : 'border border-primary' }}">
+                                &check;
+                            </button>
+
+                            <span class="{{ $step->completed ? 'line-through text-muted-foreground' : '' }}">{{ $step->description }}</span>
+                        </div>
+                    </x-form>
+                </x-layout.card>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         @if ($idea->links->count())
         <div>
             <h3 class="font-bold text-xl mt-6">Links</h3>
@@ -30,14 +53,8 @@
                 @foreach ($idea->links as $link)
 
                 <x-layout.card>
-                                            
-                    <x-layout.link 
-                        target="_blank"  
-                        :route="$link" 
-                        :title="$link" 
-                        icon="external" 
-                        width=18 
-                        height=18
+
+                    <x-layout.link target="_blank" :route="$link" :title="$link" icon="external" width=18 height=18
                         class="text-primary font-medium flex gap-x-3 items-center truncate text-sm hover:underline" />
                 </x-layout.card>
                 @endforeach

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SessionsController;
 use App\Http\Controllers\Ideas\IdeaController;
+use App\Http\Controllers\Ideas\StepController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -37,4 +38,8 @@ Route::middleware('auth')->group(function () {
         ->name('idea.edit');
     Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])
         ->name('idea.delete');
+
+
+    Route::patch('/steps/{step}', [StepController::class, 'update'])
+        ->name('steps.update');
 });
