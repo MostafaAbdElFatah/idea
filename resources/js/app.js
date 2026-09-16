@@ -3,10 +3,13 @@ import Alpine from 'alpinejs';
 import './password';
 
 window.Alpine = Alpine;
-window.ideaLinks = () => ({
+window.ideaForm = () => ({
 	links: [],
+	steps: [],
 	url: '',
+	step: '',
 	urlError: '',
+	stepError: '',
 	addLink() {
 		const url = this.url.trim();
 
@@ -31,6 +34,26 @@ window.ideaLinks = () => ({
 	},
 	removeLink(index) {
 		this.links.splice(index, 1);
+	},
+	addStep() {
+		const value = this.step.trim();
+
+		if (!value) {
+			this.stepError = 'Please enter a step.';
+			return;
+		}
+
+		if (this.steps.includes(value)) {
+			this.stepError = 'This step has already been added.';
+			return;
+		}
+
+		this.steps.push(value);
+		this.step = '';
+		this.stepError = '';
+	},
+	removeStep(index) {
+		this.steps.splice(index, 1);
 	},
 });
 

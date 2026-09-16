@@ -77,6 +77,25 @@ describe('Idea persistence', function (): void {
         expect($idea->fresh()->links->getArrayCopy())->toBe(['https://added.test']);
     });
 
+    it('persists multiple submitted steps for a new idea', function (): void {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('idea.store'), [
+                'title' => 'Ship a launch plan',
+                'description' => 'Plan the rollout.',
+                'status' => IdeaStatus::PENDING->value,
+                'links' => ['https://example.com'],
+                'steps' => ['Write the brief', 'Share with the team'],
+            ])
+            ->assertRedirect();
+
+        $idea = Idea::query()->where('user_id', $user->id)->firstOrFail();
+
+        expect($idea->steps()->count())->toBe(2)
+            ->and($idea->steps()->pluck('description')->all())->toBe(['Write the brief', 'Share with the team']);
+    });
+
     it('allows a null description and image path', function (): void {
         $idea = Idea::factory()->create(['description' => null, 'image_path' => null]);
 

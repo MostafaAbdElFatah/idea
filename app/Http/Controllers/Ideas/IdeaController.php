@@ -43,10 +43,28 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request): RedirectResponse
     {
-        //dd($request->all());
-        $idea = $request->user()->ideas()->create(
-            $request->validated()
-        );
+        $validated = $request->validated();
+        $steps = $validated['steps'] ?? [];
+
+        $idea = $request->user()->ideas()->create([
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'status' => $validated['status'] ?? IdeaStatus::PENDING->value,
+            'links' => $validated['links'] ?? [],
+            'image_path' => $validated['image_path'] ?? null,
+        ]);
+
+        foreach ($steps as $description) {
+            $description = trim((string) $description);
+
+            if ($description === '') {
+                continue;
+            }
+
+            $idea->steps()->create([
+                'description' => $description,
+            ]);
+        }
 
         return redirect()
             ->route('idea.show', $idea)
