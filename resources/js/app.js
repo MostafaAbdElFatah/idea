@@ -3,9 +3,9 @@ import Alpine from 'alpinejs';
 import './password';
 
 window.Alpine = Alpine;
-window.ideaForm = () => ({
-	links: [],
-	steps: [],
+window.ideaForm = ({ links = [], steps = [] } = {}) => ({
+	links: [...links],
+	steps: [...steps],
 	url: '',
 	step: '',
 	urlError: '',

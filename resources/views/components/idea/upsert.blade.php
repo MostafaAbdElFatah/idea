@@ -10,6 +10,17 @@
         'label' => $status->label(),
         ])
         ->all();
+
+    $oldList = fn (string $key): array => collect(old($key, []))
+        ->filter(fn ($value) => is_scalar($value) && $value !== '')
+        ->map(fn ($value) => (string) $value)
+        ->values()
+        ->all();
+
+    $initialFormState = [
+        'links' => $oldList('links'),
+        'steps' => $oldList('steps'),
+    ];
 @endphp
 
 
@@ -17,11 +28,8 @@
     <x-form
         :action="$action"
         :method="$method"
-        class="dropdown-scrollbar max-h-[90dvh] overflow-y-auto p-1 space-y-6"
-        x-data="ideaForm({
-            links: {{ json_encode(collect(old('links', []))->map(fn ($value) => is_scalar($value) ? (string) $value : '')->filter()->values()->all()) }},
-            steps: {{ json_encode(collect(old('steps', []))->map(fn ($value) => is_scalar($value) ? (string) $value : '')->filter()->values()->all()) }}
-        })"
+        class="p-1 space-y-6"
+        x-data="ideaForm({{ \Illuminate\Support\Js::from($initialFormState) }})"
     >
         <x-form.input autofacus label="Title" name="title" placeholder="Enter a title for your idea" />
         

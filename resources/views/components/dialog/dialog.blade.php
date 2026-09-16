@@ -25,14 +25,14 @@
 
     <x-layout.card 
         @click.outside="show = false" 
-        class="shadow-wl max-w-2xl w-full max-h-[80dvh] overflow-auto dropdown-scrollbar  overscroll-contain">
-        <div class="flex justify-between">
+        class="shadow-wl max-w-2xl w-full max-h-[80dvh] flex flex-col overflow-hidden">
+        <div class="flex shrink-0 justify-between">
             <h2 id="model-@js($name)-title" class="text-xl font-bold">{{ $title }}</h2>
             <button @click="show = false" aria-label="close button">
                 <x-icons.close width=30 height=30 />
             </button>
         </div>
-        <div class="mt-10">
+        <div class="mt-10 min-h-0 flex-1 overflow-y-auto dropdown-scrollbar overscroll-contain">
             {{ $slot }}
         </div>
 

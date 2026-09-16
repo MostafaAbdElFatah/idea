@@ -2,30 +2,37 @@
 
 declare(strict_types=1);
 
-use App\Http\Requests\StoreideaRequest;
-use App\Http\Requests\UpdateideaRequest;
+use App\Http\Requests\StoreIdeaRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-covers(StoreideaRequest::class, UpdateideaRequest::class);
+covers(StoreIdeaRequest::class);
 
-/**
- * The idea endpoints are not routed yet, so each request is mounted on a
- * throwaway route to prove the framework honours its authorize() answer.
- */
 describe('idea form requests over HTTP', function (): void {
-    it('forbids submissions because authorize() is false', function (string $requestClass): void {
-        Route::post('/_test/idea', function () use ($requestClass) {
-            app($requestClass);
+    it('allows authenticated submissions with valid data', function (): void {
+        Route::post('/_test/idea', function () {
+            app(StoreIdeaRequest::class);
 
             return response()->json(['ok' => true]);
         })->middleware('web');
 
         $this->actingAs(User::factory()->create())
-            ->postJson('/_test/idea', ['title' => 'A'])
-            ->assertForbidden();
-    })->with([
-        'store' => [StoreideaRequest::class],
-        'update' => [UpdateideaRequest::class],
-    ]);
+            ->postJson('/_test/idea', ['title' => 'Learn guitar'])
+            ->assertOk();
+    });
+
+    it('redirects back with errors and reopens the dialog on failure', function (): void {
+        Route::post('/_test/idea', function () {
+            app(StoreIdeaRequest::class);
+
+            return response()->json(['ok' => true]);
+        })->middleware('web');
+
+        $this->actingAs(User::factory()->create())
+            ->from('/ideas')
+            ->post('/_test/idea', ['title' => 'A'])
+            ->assertRedirect('/ideas')
+            ->assertSessionHasErrors('title')
+            ->assertSessionHas('open_modal', 'create-idea');
+    });
 })->group('feature', 'requests');
