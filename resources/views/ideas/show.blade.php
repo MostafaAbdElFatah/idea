@@ -13,7 +13,7 @@
         </div>
         <h1 class="font-bold text-4xl mt-6 mx-2">{{ $idea->title }}</h1>
         <div class="flex gap-x-3 items-center mt-4">
-            <x-ideas.status-label :status="$idea->status" />
+            <x-idea.status-label :status="$idea->status" />
 
             <div class="text-mutred-foreground text-sm"> {{ $idea->created_at->diffForHumans() }} </div>
         </div>

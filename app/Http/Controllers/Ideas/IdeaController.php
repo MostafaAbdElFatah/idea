@@ -6,8 +6,7 @@ namespace App\Http\Controllers\Ideas;
 
 use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreideaRequest;
-use App\Http\Requests\UpdateideaRequest;
+use App\Http\Requests\StoreIdeaRequest;
 use App\Models\Idea;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -40,19 +39,11 @@ class IdeaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): View
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreideaRequest $request): View
+    public function store(StoreIdeaRequest $request): View
     {
-        //
+        dd('persist the idea.');
     }
 
     /**
@@ -70,15 +61,8 @@ class IdeaController extends Controller
      */
     public function edit(Idea $idea): View
     {
-        //
-    }
+                return redirect()->back()->withErrors($validator)->withInput();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateideaRequest $request, Idea $idea): View
-    {
-        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     /**

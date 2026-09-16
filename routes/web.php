@@ -28,11 +28,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/ideas', [IdeaController::class, 'index'])
         ->name('ideas.index');
+    Route::post('/ideas', [IdeaController::class, 'store'])
+        ->name('idea.store');
 
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.show');
     Route::patch('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.edit');
-     Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])
+    Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])
         ->name('idea.delete');
 });

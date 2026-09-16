@@ -17,7 +17,7 @@
         autocomplete="{{ $autocomplete }}" {{ $attributes->except('class') }}
     class="input @error($name) border-error focus:border-error focus:ring-error/15 @enderror"
     placeholder="{{ $placeholder ?? $label }}"
-    {{-- required --}}
+    required
     >
 
     <x-form.error :name="$name" />
