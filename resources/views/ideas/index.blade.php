@@ -24,7 +24,7 @@
             @endif
         </div>
 
-        <x-idea.upsert action="{{ route('idea.store') }}" />
+        <x-idea.upsert action="{{ route('ideas.store') }}" />
 
     </div>
 </x-layout>

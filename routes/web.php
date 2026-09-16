@@ -28,8 +28,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/ideas', [IdeaController::class, 'index'])
         ->name('ideas.index');
-    Route::post('/ideas', [IdeaController::class, 'store'])
-        ->name('idea.store');
+    Route::post('/ideas/store', [IdeaController::class, 'store'])
+        ->name('ideas.store');
 
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.show');

@@ -11,6 +11,7 @@ use App\Models\Idea;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class IdeaController extends Controller
@@ -61,8 +62,7 @@ class IdeaController extends Controller
      */
     public function edit(Idea $idea): View
     {
-                return redirect()->back()->withErrors($validator)->withInput();
-
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     /**
