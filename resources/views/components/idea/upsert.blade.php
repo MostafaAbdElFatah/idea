@@ -49,16 +49,19 @@ $initialFormState = [
         <!-- image -->
         <div class="space-y-2">
             
+            //todo:-can when user select image show here else see placeholder or old image
             <x-idea.image :idea="$idea" label="Feature Image" class="rounded-lg mt-10" />
 
-            <button 
-                type="button" 
-                class="btn btn-outlined mt-2 mb-6 h-14 w-full "
-                @click="" 
-                :aria-label="`Remove Image`"
+            @if ($idea->imageUrl)
+            <button
+                type="submit"
+                form="remove-idea-image"
+                class="btn btn-outlined mt-2 mb-6 h-14 w-full"
+                aria-label="Remove Image"
             >
-             Remove Image
+                Remove Image
             </button>
+            @endif
 
             <x-form.input autofacus label="Image" name="image" type="file" accept="image/*" :required="false"
                 x-on:change="hasImage = $event.target.files.length > 0" />
@@ -139,9 +142,13 @@ $initialFormState = [
             </button>
 
             <button type="submit" class="btn">
-                {{ $idea->exists ? 'Edit' : 'Create'}}
+                {{ $idea->exists ? 'Update' : 'Create'}}
             </button>
 
         </div>
     </x-form>
+
+    @if ($idea->imageUrl)
+    <x-form id="remove-idea-image" :action="route('idea.image.destroy', $idea)" method="DELETE" class="hidden" />
+    @endif
 </x-dialog>

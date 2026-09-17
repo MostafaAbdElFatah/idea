@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Models\Idea;
 use App\Models\Step;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 describe('ideas pages', function (): void {
     it('render the ideas page without console errors', function (): void {
@@ -83,6 +85,68 @@ describe('idea flow', function (): void {
             ->assertNoJavascriptErrors();
 
         expect(Idea::query()->count())->toBe(0);
+    });
+
+    it('previews a selected image and returns to the placeholder when cleared', function (): void {
+        loginAs();
+        $image = UploadedFile::fake()->image('garden.jpg', 800, 400);
+
+        visit(route('idea.index'))
+            ->click("What's the idea?")
+            ->assertSee('Click to add an image')
+            ->attach('#image', $image->getPathname())
+            ->assertVisible('img[alt="Selected image preview"]')
+            ->assertSee('New image')
+            ->assertDontSee('Click to add an image')
+            ->click('[aria-label="Clear selected image"]')
+            ->assertMissing('img[alt="Selected image preview"]')
+            ->assertSee('Click to add an image')
+            ->assertNoJavascriptErrors();
+    });
+
+    it('lets the owner edit an idea from the edit dialog', function (): void {
+        $user = loginAs();
+        $idea = Idea::factory()->for($user)->create(['title' => 'Learn guitar', 'links' => []]);
+        Step::factory()->for($idea)->create(['description' => 'Buy a guitar']);
+
+        visit(route('idea.show', $idea))
+            ->click('Edit Idea')
+            ->fill('title', 'Learn piano')
+            ->fill('#step', 'Find a teacher')
+            ->click('[aria-label="Add step"]')
+            ->click('button[type="submit"]:text-is("Edit")')
+            ->assertSee('Idea updated successfully.')
+            ->assertSee('Learn piano')
+            ->assertSee('Find a teacher')
+            ->assertNoJavascriptErrors();
+
+        expect($idea->fresh()->title)->toBe('Learn piano')
+            ->and($idea->steps()->pluck('description')->all())->toBe(['Buy a guitar', 'Find a teacher']);
+    });
+
+    it('lets the owner remove the idea image after confirming', function (): void {
+        Storage::fake('public');
+        $user = loginAs();
+        $path = UploadedFile::fake()->image('garden.jpg', 1200, 600)->store('ideas', 'public');
+        $idea = Idea::factory()->for($user)->create(['image_path' => $path]);
+
+        $page = visit(route('idea.show', $idea))
+            ->hover('img[alt="'.$idea->title.'"] >> nth=0')
+            ->click('[aria-label="Remove image"] >> nth=0')
+            ->assertSee('Remove image?')
+            ->click('[aria-label="Confirm image removal"] >> nth=0 >> text=Keep')
+            ->assertDontSee('Remove image?');
+
+        expect($idea->fresh()->image_path)->toBe($path);
+
+        $page->hover('img[alt="'.$idea->title.'"] >> nth=0')
+            ->click('[aria-label="Remove image"] >> nth=0')
+            ->click('[aria-label="Confirm image removal"] >> nth=0 >> button[type="submit"]')
+            ->assertSee('Image removed successfully.')
+            ->assertNoJavascriptErrors();
+
+        Storage::disk('public')->assertMissing($path);
+        expect($idea->fresh()->image_path)->toBeNull();
     });
 
     it('lets a user complete and reopen a step', function (): void {

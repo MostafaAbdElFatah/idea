@@ -18,7 +18,11 @@
             </div>
         </div>
 
-        <x-idea.image :idea="$idea" class="rounded-lg mt-10" />
+        <x-idea.image :idea="$idea" remove-form="remove-idea-image-inline" class="rounded-lg mt-10" />
+
+        @if ($idea->imageUrl)
+        <x-form id="remove-idea-image-inline" :action="route('idea.image.destroy', $idea)" method="DELETE" class="hidden" />
+        @endif
 
         <h1 class="font-bold text-4xl mt-6 mx-2">{{ $idea->title }}</h1>
         <div class="flex gap-x-3 items-center mt-4">
@@ -74,7 +78,7 @@
 
 
         {{-- edit dailog --}}
-        <x-idea.upsert action="{{ route('idea.edit', $idea) }}" :idea="$idea" />
+        <x-idea.upsert :action="route('idea.update', $idea)" method="PATCH" :idea="$idea" />
 
             
         {{-- confirm delete dailog --}}

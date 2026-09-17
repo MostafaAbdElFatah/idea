@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Ideas;
 
 use App\Actions\CreateIdea;
+use App\Actions\UpdateIdea;
 use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIdeaRequest;
+use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -94,15 +96,9 @@ class IdeaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Idea $idea): RedirectResponse
+    public function update(UpdateIdeaRequest $request, Idea $idea, UpdateIdea $updateIdea): RedirectResponse
     {
-        Gate::authorize('update', $idea);
-
-        $this->updateIdea->handle(
-            $idea,
-            $request->validated(),
-            $request->file('image'),
-        );
+        $updateIdea->handle($idea, $request->validated(), $request->file('image'));
 
         return redirect()
             ->route('idea.show', $idea)

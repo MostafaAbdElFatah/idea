@@ -21,7 +21,7 @@ describe('idea image component', function (): void {
         $idea = new Idea(['title' => 'Build a garden', 'image_path' => 'ideas/garden.jpg']);
 
         $this->blade('<x-idea.image :idea="$idea" label="Cover image" />', ['idea' => $idea])
-            ->assertSee('<label class="label">Cover image</label>', false);
+            ->assertSeeInOrder(['<label', 'Cover image', '</label>'], false);
 
         $this->blade('<x-idea.image :idea="$idea" />', ['idea' => $idea])
             ->assertDontSee('<label', false);

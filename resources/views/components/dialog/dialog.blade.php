@@ -3,7 +3,7 @@
 <div 
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/700 backdrop-blur-xs"
     x-data="{ 
-        show: @js($errors->any() && session('open_modal') === $name), 
+        show: @js(session('open_modal') === $name), 
         name: @js($name) 
     }" 
     x-cloak 

@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 
 use App\Enums\IdeaStatus;
 use App\Models\Idea;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -16,7 +17,7 @@ class StoreIdeaRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): bool|Response
     {
         return $this->user()?->can('create', Idea::class) ?? false;
     }

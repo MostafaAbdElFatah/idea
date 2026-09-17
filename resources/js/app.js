@@ -6,6 +6,25 @@ window.Alpine = Alpine;
 window.ideaForm = ({ links = [], steps = [] } = {}) => ({
 	links: [...links],
 	hasImage: false,
+	imagePreview: null,
+	previewImage(event) {
+		const [file] = event.target.files;
+
+		this.revokeImagePreview();
+		this.hasImage = Boolean(file);
+		this.imagePreview = file ? URL.createObjectURL(file) : null;
+	},
+	clearImage() {
+		this.revokeImagePreview();
+		this.$refs.image.value = '';
+		this.hasImage = false;
+		this.imagePreview = null;
+	},
+	revokeImagePreview() {
+		if (this.imagePreview) {
+			URL.revokeObjectURL(this.imagePreview);
+		}
+	},
 	steps: [...steps],
 	url: '',
 	step: '',
