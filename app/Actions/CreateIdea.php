@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class CreateIdea
 {
+    // public function __construct(#[CurrentUser] protected User $user)
+    // {
+
+    // }
+
     /**
      * Create an idea with its steps for the given user.
      *
@@ -22,7 +27,7 @@ class CreateIdea
             $idea = $user->ideas()->create(collect($attributes)
                 ->except(['steps', 'image'])
                 ->reject(fn (mixed $value): bool => $value === null)
-                //->put('status', $attributes['status'] ?? IdeaStatus::PENDING->value)
+                // ->put('status', $attributes['status'] ?? IdeaStatus::PENDING->value)
                 ->put('image_path', $image?->store('ideas', 'public'))
                 ->all());
 

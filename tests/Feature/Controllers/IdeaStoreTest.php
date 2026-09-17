@@ -5,9 +5,12 @@ declare(strict_types=1);
 use App\Enums\IdeaStatus;
 use App\Http\Controllers\Ideas\IdeaController;
 use App\Models\Idea;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
+use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
 covers(IdeaController::class);
@@ -96,6 +99,24 @@ describe('creating an idea', function (): void {
 
     it('requires authentication', function (): void {
         post(route('idea.store'), ['title' => 'Guest idea'])->assertRedirect(route('login'));
+
+        expect(Idea::query()->count())->toBe(0);
+    });
+})->group('feature', 'controllers');
+
+describe('authorizing idea abilities', function (): void {
+    it('forbids listing ideas when the policy denies viewAny', function (): void {
+        loginAs();
+        Gate::before(fn (User $user, string $ability): ?bool => $ability === 'viewAny' ? false : null);
+
+        get(route('idea.index'))->assertForbidden();
+    });
+
+    it('forbids creating an idea when the policy denies create', function (): void {
+        loginAs();
+        Gate::before(fn (User $user, string $ability): ?bool => $ability === 'create' ? false : null);
+
+        post(route('idea.store'), ['title' => 'Build a garden'])->assertForbidden();
 
         expect(Idea::query()->count())->toBe(0);
     });

@@ -19,5 +19,5 @@ arch('models do not use facades DB or Request')
     ->group('architecture', 'models');
 
 arch('models are only used by the application layers that own them')
-    ->expect('App\Models')->toOnlyBeUsedIn(['App\Models', 'App\Http', 'App\Policies', 'App\Providers', 'Database'])
+    ->expect('App\Models')->toOnlyBeUsedIn(['App\Models', 'App\Actions', 'App\Http', 'App\Policies', 'App\Providers', 'Database'])
     ->group('architecture', 'models');

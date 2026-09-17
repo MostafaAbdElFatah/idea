@@ -22,6 +22,8 @@ class IdeaController extends Controller
      */
     public function index(): View
     {
+        Gate::authorize('viewAny', Idea::class);
+
         $validStatyses = IdeaStatus::values();
         $validated = request()->validate([
             'status' => ['nullable', Rule::in($validStatyses)],
@@ -43,9 +45,10 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-public function store(StoreIdeaRequest $request, CreateIdea $createIdea): RedirectResponse    {
+    public function store(StoreIdeaRequest $request, CreateIdea $createIdea): RedirectResponse
+    {
         // $validated = $request->safe()->except(['steps', 'image']); //->except('steps');
-        
+
         // $steps = $request['steps'] ?? [];
         // unset($request['steps']);
 
@@ -86,14 +89,6 @@ public function store(StoreIdeaRequest $request, CreateIdea $createIdea): Redire
         return view('idea.show', [
             'idea' => $idea,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Idea $idea): RedirectResponse
-    {
-        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     /**

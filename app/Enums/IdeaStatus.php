@@ -24,7 +24,7 @@ enum IdeaStatus: string
 
     public static function has(string $value): bool
     {
-        return in_array(strtolower(trim($value)), self::values);
+        return in_array(strtolower(trim($value)), self::values(), true);
     }
 
     public function label(): string

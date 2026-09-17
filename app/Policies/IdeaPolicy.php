@@ -67,11 +67,15 @@ class IdeaPolicy
     }
 
     /**
-     * Determine whether the user owns the idea.
+     * Determine whether the authenticated user owns the given idea.
+     *
+     * Returns a 404-style denial when the idea belongs to another user,
+     * preventing unauthorized users from discovering its existence.
      */
     private function owns(User $user, Idea $idea): Response
     {
-        return $idea->user_id === $user->id
+        // $idea->user_id === $user->id
+        return $idea->user()->is($user)
             ? Response::allow()
             : Response::denyAsNotFound();
     }

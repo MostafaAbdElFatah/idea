@@ -5,6 +5,7 @@ import './password';
 window.Alpine = Alpine;
 window.ideaForm = ({ links = [], steps = [] } = {}) => ({
 	links: [...links],
+	hasImage: false,
 	steps: [...steps],
 	url: '',
 	step: '',

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\IdeaStatus;
 use App\Models\Idea;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Support\Facades\Storage;
 
 covers(Idea::class);
 
@@ -51,5 +52,12 @@ describe('Idea model configuration', function (): void {
         expect($idea->getTable())->toBe('ideas')
             ->and($idea->getKeyName())->toBe('id')
             ->and($idea->getIncrementing())->toBeTrue();
+    });
+
+    it('builds the image url from the public disk', function (): void {
+        Storage::fake('public');
+
+        expect((new Idea(['image_path' => 'ideas/garden.jpg']))->imageUrl)->toBe(Storage::disk('public')->url('ideas/garden.jpg'))
+            ->and((new Idea)->imageUrl)->toBeNull();
     });
 })->group('unit', 'models');

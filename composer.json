@@ -83,7 +83,10 @@
         "rector": "vendor/bin/rector",
         "test:unit": "pest --testsuite=Unit --parallel",
         "test:feature": "pest --testsuite=Feature --parallel",
-        "test:browser": "pest --testsuite=Browser",
+        "test:browser": [
+            "npm run build",
+            "pest --testsuite=Browser"
+        ],
         "test:arch": "pest --testsuite=Architecture",
         "test:stress": "pest --testsuite=Stress --group=stress",
         "test:coverage": "XDEBUG_MODE=coverage pest --parallel --exclude-group=stress,browser --coverage --min=90 --coverage-html=reports/coverage --coverage-clover=reports/clover.xml",

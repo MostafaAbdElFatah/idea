@@ -29,7 +29,7 @@
         :action="$action"
         :method="$method"
         class="p-1 space-y-6"
-        enctype="multipart/form-data"
+        x-bind:enctype="hasImage ? 'multipart/form-data' : 'application/x-www-form-urlencoded'"
         x-data="ideaForm({{ \Illuminate\Support\Js::from($initialFormState) }})"
     >
         <x-form.input autofacus label="Title" name="title" placeholder="Enter a title for your idea" />
@@ -47,7 +47,7 @@
             placeholder="Describe your idea" :required=false />
 
          <!-- Steps -->
-        <x-form.input autofacus label="Image" name="image" type="file" accept="image/" :required="false"/>
+        <x-form.input autofacus label="Image" name="image" type="file" accept="image/*" :required="false" x-on:change="hasImage = $event.target.files.length > 0"/>
 
                 <div class="space-y-3">
             <label for="step" class="label">Actionable Steps</label>
