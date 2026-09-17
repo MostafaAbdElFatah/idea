@@ -92,6 +92,24 @@ class IdeaController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Idea $idea): RedirectResponse
+    {
+        Gate::authorize('update', $idea);
+
+        $this->updateIdea->handle(
+            $idea,
+            $request->validated(),
+            $request->file('image'),
+        );
+
+        return redirect()
+            ->route('idea.show', $idea)
+            ->with('success', 'Idea updated successfully.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Idea $idea): RedirectResponse

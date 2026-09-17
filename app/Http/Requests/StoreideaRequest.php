@@ -40,7 +40,7 @@ class StoreIdeaRequest extends FormRequest
         ];
     }
 
-        /**
+    /**
      * Handle a failed validation attempt.
      */
     protected function failedValidation(Validator $validator): void

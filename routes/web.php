@@ -34,11 +34,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])
         ->name('idea.show');
-    Route::patch('/ideas/{idea}', [IdeaController::class, 'show'])
+    Route::patch('/ideas/{idea}', [IdeaController::class, 'edit'])
         ->name('idea.edit');
     Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])
         ->name('idea.delete');
-
 
     Route::patch('/steps/{step}', [StepController::class, 'update'])
         ->name('steps.update');

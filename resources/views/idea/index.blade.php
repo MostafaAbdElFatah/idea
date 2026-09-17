@@ -19,7 +19,7 @@
 
         <div class="mt-10 text-muted-foreground">
             @if ($ideas->isNotEmpty())
-            <div x-data="masonryGrid" class="grid auto-rows-[1px] items-start gap-x-6 md:grid-cols-2 mb-10">
+            <div x-data="masonryGrid" class="grid auto-rows-0.25 items-start gap-x-6 md:grid-cols-2 mb-10">
                 @foreach ($ideas as $idea)
                 <x-idea.card :idea="$idea" />
                 @endforeach

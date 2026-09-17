@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Js;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -180,6 +181,20 @@ describe('viewing and deleting an idea', function (): void {
         $this->delete(route('idea.delete', $idea))->assertRedirect(route('idea.index'));
 
         expect(Idea::query()->count())->toBe(0);
+    });
+
+    it('prefills the edit dialog with the idea status, links, and steps', function (): void {
+        $user = loginAs();
+        $idea = Idea::factory()->for($user)->create([
+            'status' => IdeaStatus::ACTIVE,
+            'links' => ['https://example.com'],
+        ]);
+        $idea->steps()->create(['description' => 'Buy a guitar']);
+
+        $this->get(route('idea.show', $idea))
+            ->assertOk()
+            ->assertSee("value: 'active'", false)
+            ->assertSee(Js::from(['links' => ['https://example.com'], 'steps' => ['Buy a guitar']]), false);
     });
 
     it('hides an idea from other users', function (): void {

@@ -4,20 +4,21 @@
             <x-layout.link :route="route('idea.index', $idea)" icon="arrow-back" title="Back to Ideas" />
             <div class="flex items-center space-x-4">
 
-                <x-layout.button :action="route('idea.edit', $idea)" icon="arrow-back" title="Edit Idea" icon='external'
-                    :width=16 height=16 />
+                <x-layout.button 
+                    @click="$dispatch('open-model', 'edit-idea')"
+                    icon="arrow-back" 
+                    title="Edit Idea" 
+                    icon='external'
+                    width=16 
+                    height=16 
+                />
 
                 <x-layout.button type="button" @click="deleteDialogOpen = true" title="Delete" icon="trash" :width="16"
                     :height="16" class="text-red-500" />
             </div>
         </div>
 
-        @if ($idea->imageUrl)
-        <!-- $idea->imageUrl or Storage::url($idea->image_path) or asset('storage/' . $idea->image_path) -->
-        <div class="rounded-lg overflow-hidden mt-10">
-            <img src="{{ $idea->imageUrl }}" alt="{{ $idea->title }}" class="w-full h-auto object-cover">
-        </div>
-        @endif
+        <x-idea.image :idea="$idea" class="rounded-lg mt-10" />
 
         <h1 class="font-bold text-4xl mt-6 mx-2">{{ $idea->title }}</h1>
         <div class="flex gap-x-3 items-center mt-4">
@@ -72,7 +73,10 @@
         @endif
 
 
+        {{-- edit dailog --}}
+        <x-idea.upsert action="{{ route('idea.edit', $idea) }}" :idea="$idea" />
 
+            
         {{-- confirm delete dailog --}}
 
         <x-dialog.confirm-dialog title="Delete Idea?"
