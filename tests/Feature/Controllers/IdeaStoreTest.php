@@ -59,6 +59,16 @@ describe('creating an idea', function (): void {
         'invalid link' => [['title' => 'Valid', 'links' => ['not-a-url']], 'links.0'],
     ]);
 
+    it('keeps the selected status after a failed submission', function (): void {
+        loginAs();
+
+        $this->from(route('idea.index'))
+            ->followingRedirects()
+            ->post(route('idea.store'), ['status' => IdeaStatus::COMPLETED->value])
+            ->assertOk()
+            ->assertSee('value: \''.IdeaStatus::COMPLETED->value.'\'', false);
+    });
+
     it('requires authentication', function (): void {
         post(route('idea.store'), ['title' => 'Guest idea'])->assertRedirect(route('login'));
 

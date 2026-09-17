@@ -53,6 +53,19 @@ describe('idea flow', function (): void {
             ->and($idea->links->getArrayCopy())->toBe(['https://example.com']);
     });
 
+    it('closes the create dialog when cancel is clicked', function (): void {
+        loginAs();
+
+        visit(route('idea.index'))
+            ->click("What's the idea?")
+            ->assertVisible('[role="dialog"]')
+            ->click('Cancel')
+            ->assertMissing('[role="dialog"]')
+            ->assertNoJavascriptErrors();
+
+        expect(Idea::query()->count())->toBe(0);
+    });
+
     it('keeps added steps and links after a validation error', function (): void {
         loginAs();
 

@@ -40,7 +40,7 @@
                 Status
             </label>
 
-            <x-form.dropdown name="status" :options="$statusOptions" placeholder="All statuses" />
+            <x-form.dropdown name="status" :options="$statusOptions" :selected="old('status')" placeholder="All statuses" />
         </div>
 
         <x-form.input autofacus label="Description" name="description" type="textarea"
@@ -154,7 +154,7 @@
 
         <div class="mt-6 flex justify-end gap-3">
 
-            <button type="button" class="btn btn-outlined">
+            <button type="button" class="btn btn-outlined" @click="show = false">
                 Cancel
             </button>
 
