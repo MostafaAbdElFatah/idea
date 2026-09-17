@@ -56,5 +56,18 @@ window.ideaForm = ({ links = [], steps = [] } = {}) => ({
 		this.steps.splice(index, 1);
 	},
 });
+window.masonryGrid = () => ({
+	rowGap: 24,
+	init() {
+		const observer = new ResizeObserver(() => this.layout());
+
+		[...this.$el.children].forEach((item) => observer.observe(item));
+	},
+	layout() {
+		[...this.$el.children].forEach((item) => {
+			item.style.gridRowEnd = `span ${Math.ceil(item.getBoundingClientRect().height) + this.rowGap}`;
+		});
+	},
+});
 
 Alpine.start();
