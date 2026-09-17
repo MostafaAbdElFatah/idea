@@ -46,6 +46,14 @@ describe('creating an idea', function (): void {
             ->and($idea->links->getArrayCopy())->toBe([]);
     });
 
+    it('defaults the status to pending when an empty status is submitted', function (): void {
+        loginAs();
+
+        post(route('idea.store'), ['title' => 'Minimal idea', 'status' => ''])->assertRedirect();
+
+        expect(Idea::query()->sole()->status)->toBe(IdeaStatus::PENDING);
+    });
+
     it('stores the uploaded image on the public disk', function (): void {
         Storage::fake('public');
         loginAs();

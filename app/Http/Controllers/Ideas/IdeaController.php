@@ -53,6 +53,8 @@ public function store(StoreIdeaRequest $request, CreateIdea $createIdea): Redire
 
         // $data = collect($validated)
         //     ->except(['steps', 'image'])
+        //     ->reject(fn (mixed $value): bool => $value === null)
+        //     ->put('status', $attributes['status'] ?? IdeaStatus::PENDING->value)
         //     ->put('image_path', $imagePath)
         //     ->all();
 
