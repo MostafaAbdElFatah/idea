@@ -7,6 +7,11 @@ use App\Http\Controllers\Auth\SessionsController;
 use App\Http\Controllers\Ideas\IdeaController;
 use App\Http\Controllers\Ideas\IdeaImageController;
 use App\Http\Controllers\Ideas\StepController;
+use App\Http\Controllers\ProfileBannerController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileEmailController;
+use App\Http\Controllers\ProfileImageController;
+use App\Http\Controllers\ProfilePasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -27,6 +32,23 @@ Route::middleware('auth')->group(function () {
 
     Route::redirect('/', '/ideas')
         ->name('home');
+
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile.show');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    Route::delete('/profile/image', [ProfileImageController::class, 'destroy'])
+        ->name('profile.image.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+    Route::put('/profile/password', [ProfilePasswordController::class, 'update'])
+        ->name('profile.password.update');
+    Route::put('/profile/email', [ProfileEmailController::class, 'update'])
+        ->name('profile.email.update');
+    Route::post('/profile/banner', [ProfileBannerController::class, 'update'])
+        ->name('profile.banner.update');
+    Route::delete('/profile/banner', [ProfileBannerController::class, 'destroy'])
+        ->name('profile.banner.destroy');
 
     Route::get('/ideas', [IdeaController::class, 'index'])
         ->name('idea.index');

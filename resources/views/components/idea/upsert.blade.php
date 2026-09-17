@@ -47,24 +47,73 @@ $initialFormState = [
 
 
         <!-- image -->
-        <div class="space-y-2">
-            
-            //todo:-can when user select image show here else see placeholder or old image
-            <x-idea.image :idea="$idea" label="Feature Image" class="rounded-lg mt-10" />
+        <div class="space-y-3">
+            <label for="image" class="label">Feature Image</label>
+
+            <input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/*"
+                x-ref="image"
+                @change="previewImage($event)"
+                class="sr-only"
+            >
+
+            {{-- Preview of the newly selected image --}}
+            <div x-show="imagePreview" x-cloak class="group relative overflow-hidden rounded-lg">
+                <img :src="imagePreview" alt="Selected image preview" class="w-full h-auto max-h-80 object-cover">
+
+                <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/60 to-transparent"></div>
+
+                <span class="absolute left-3 top-3 rounded-full bg-primary/90 px-2.5 py-1 text-xs font-semibold text-primary-foreground backdrop-blur-md">
+                    New image
+                </span>
+
+                <div class="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/60 p-1 text-xs text-white ring-1 ring-white/15 backdrop-blur-md">
+                    <label for="image" class="cursor-pointer rounded-full px-2.5 py-1 font-medium transition hover:bg-white/10">
+                        Change
+                    </label>
+                    <button
+                        type="button"
+                        @click="clearImage()"
+                        class="rounded-full p-1.5 transition hover:bg-error"
+                        aria-label="Clear selected image"
+                    >
+                        <x-icons.close width="12" height="12" />
+                    </button>
+                </div>
+            </div>
 
             @if ($idea->imageUrl)
-            <button
-                type="submit"
-                form="remove-idea-image"
-                class="btn btn-outlined mt-2 mb-6 h-14 w-full"
-                aria-label="Remove Image"
+            {{-- Current image --}}
+            <div x-show="! imagePreview" class="space-y-2">
+                <x-idea.image :idea="$idea" remove-form="remove-idea-image" class="rounded-lg" />
+
+                <label for="image" class="inline-flex cursor-pointer text-sm font-medium text-primary hover:underline">
+                    Replace image
+                </label>
+            </div>
+            @else
+            {{-- Placeholder --}}
+            <label
+                for="image"
+                x-show="! imagePreview"
+                class="group flex h-44 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-card text-muted-foreground transition hover:border-primary/50 hover:bg-primary/5 hover:text-foreground @error('image') border-error @enderror"
             >
-                Remove Image
-            </button>
+                <span class="flex h-11 w-11 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10 transition group-hover:bg-primary/15 group-hover:text-primary">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <path d="m21 15-5-5L5 21" />
+                    </svg>
+                </span>
+                <span class="text-sm font-medium">Click to add an image</span>
+                <span class="text-xs">PNG, JPG or WEBP up to 5MB</span>
+            </label>
             @endif
 
-            <x-form.input autofacus label="Image" name="image" type="file" accept="image/*" :required="false"
-                x-on:change="hasImage = $event.target.files.length > 0" />
+            <x-form.error name="image" />
         </div>
 
 
@@ -149,6 +198,8 @@ $initialFormState = [
     </x-form>
 
     @if ($idea->imageUrl)
-    <x-form id="remove-idea-image" :action="route('idea.image.destroy', $idea)" method="DELETE" class="hidden" />
+    <x-form id="remove-idea-image" :action="route('idea.image.destroy', $idea)" method="DELETE" class="hidden">
+        <input type="hidden" name="reopen_dialog" value="1">
+    </x-form>
     @endif
 </x-dialog>

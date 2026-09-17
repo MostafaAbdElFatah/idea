@@ -22,9 +22,12 @@ class RegisteredUserController extends Controller
      */
     public function store(StoreRegisterRequest $request)
     {
-        $user = User::create($request->validated());
+        $user = User::create([
+            ...$request->safe()->except('profile_image'),
+            'profile_image_path' => $request->file('profile_image')?->store('profile-images', 'public'),
+        ]);
 
-        Auth::login($user);
+        Auth::login($user, $request->boolean('remember'));
 
         return redirect()
             ->route('home')

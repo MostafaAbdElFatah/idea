@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
@@ -53,6 +56,50 @@ describe('registration', function (): void {
             ->and($user->last_name)->toBe('Doe');
 
         $this->assertAuthenticatedAs($user);
+    });
+
+    it('remembers the new user only when remember is checked', function (bool $remember): void {
+        $response = post(route('register.store'), validRegistration(['remember' => $remember ? '1' : null]))
+            ->assertRedirect(route('home'));
+
+        $recaller = Auth::guard()->getRecallerName();
+
+        $remember
+            ? $response->assertCookie($recaller)
+            : $response->assertCookieMissing($recaller);
+
+        expect(User::firstWhere('email', 'jane@example.com')->remember_token === null)->toBe(! $remember);
+    })->with(['checked' => true, 'unchecked' => false]);
+
+    it('shows a remember me checkbox', function (): void {
+        get(route('register'))->assertSee('name="remember"', false)->assertSee('Remember me');
+    });
+
+    it('stores an optional profile image', function (): void {
+        Storage::fake('public');
+
+        post(route('register.store'), validRegistration([
+            'profile_image' => UploadedFile::fake()->image('me.jpg'),
+        ]))->assertRedirect(route('home'));
+
+        $path = User::firstWhere('email', 'jane@example.com')->profile_image_path;
+
+        expect($path)->toStartWith('profile-images/');
+        Storage::disk('public')->assertExists($path);
+    });
+
+    it('registers without a profile image', function (): void {
+        post(route('register.store'), validRegistration())->assertRedirect(route('home'));
+
+        expect(User::firstWhere('email', 'jane@example.com')->profile_image_path)->toBeNull();
+    });
+
+    it('rejects a profile image that is not an image', function (): void {
+        post(route('register.store'), validRegistration([
+            'profile_image' => UploadedFile::fake()->create('notes.pdf', 10, 'application/pdf'),
+        ]))->assertSessionHasErrors('profile_image');
+
+        expect(User::query()->count())->toBe(0);
     });
 
     it('hashes the stored password', function (): void {

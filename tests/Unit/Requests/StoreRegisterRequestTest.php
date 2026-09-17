@@ -9,7 +9,7 @@ covers(StoreRegisterRequest::class);
 describe('StoreRegisterRequest', function (): void {
     it('declares rules for every registration field', function (): void {
         expect(array_keys((new StoreRegisterRequest)->rules()))
-            ->toBe(['first_name', 'last_name', 'email', 'password']);
+            ->toBe(['first_name', 'last_name', 'email', 'password', 'profile_image']);
     });
 
     it('requires each field', function (string $field): void {

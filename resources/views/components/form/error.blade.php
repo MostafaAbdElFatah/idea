@@ -1,6 +1,6 @@
-@props(['name'])
+@props(['name', 'bag' => 'default'])
 
-@error($name)
+@error($name, $bag)
 <p class="text-sm text-error">
     {{ $message }}
 </p>

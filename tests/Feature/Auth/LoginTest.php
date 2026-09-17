@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\SessionsController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
@@ -62,6 +63,24 @@ describe('login', function (): void {
 
         $this->assertAuthenticatedAs($this->user);
         expect($this->user->fresh()->remember_token)->not->toBeNull();
+    });
+
+    it('sets the remember-me cookie only when remember is checked', function (bool $remember): void {
+        $response = post(route('login.store'), [
+            'email' => 'jane@example.com',
+            'password' => 'password123',
+            'remember' => $remember ? '1' : null,
+        ])->assertRedirect(route('home'));
+
+        $recaller = Auth::guard()->getRecallerName();
+
+        $remember
+            ? $response->assertCookie($recaller)
+            : $response->assertCookieMissing($recaller);
+    })->with(['checked' => true, 'unchecked' => false]);
+
+    it('shows a remember me checkbox', function (): void {
+        get(route('login'))->assertSee('name="remember"', false)->assertSee('Remember me');
     });
 
     it('regenerates the session id to prevent fixation', function (): void {

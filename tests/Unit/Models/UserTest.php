@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 covers(User::class);
 
@@ -41,5 +42,22 @@ describe('User model configuration', function (): void {
 
         expect($user->ideas()->getForeignKeyName())->toBe('user_id')
             ->and($user->steps()->getForeignKeyName())->toBe('user_id');
+    });
+})->group('unit', 'models');
+
+describe('User profile accessors', function (): void {
+    it('builds the full name and initials', function (): void {
+        $user = new User(['first_name' => 'jane', 'last_name' => 'doe']);
+
+        expect($user->fullName)->toBe('jane doe')
+            ->and($user->initials)->toBe('JD');
+    });
+
+    it('builds the profile image url from the public disk', function (): void {
+        Storage::fake('public');
+
+        expect((new User(['profile_image_path' => 'profile-images/me.jpg']))->profileImageUrl)
+            ->toBe(Storage::disk('public')->url('profile-images/me.jpg'))
+            ->and((new User(['profile_image_path' => null]))->profileImageUrl)->toBeNull();
     });
 })->group('unit', 'models');

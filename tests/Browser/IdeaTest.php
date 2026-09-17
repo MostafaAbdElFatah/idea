@@ -61,7 +61,7 @@ describe('idea flow', function (): void {
         visit(route('idea.index'))
             ->click("What's the idea?")
             ->assertVisible('[role="dialog"]')
-            ->click('Cancel')
+            ->click('[role="dialog"] button:text-is("Cancel")')
             ->assertMissing('[role="dialog"]')
             ->assertNoJavascriptErrors();
 
@@ -114,7 +114,7 @@ describe('idea flow', function (): void {
             ->fill('title', 'Learn piano')
             ->fill('#step', 'Find a teacher')
             ->click('[aria-label="Add step"]')
-            ->click('button[type="submit"]:text-is("Edit")')
+            ->click('button[type="submit"]:text-is("Update")')
             ->assertSee('Idea updated successfully.')
             ->assertSee('Learn piano')
             ->assertSee('Find a teacher')

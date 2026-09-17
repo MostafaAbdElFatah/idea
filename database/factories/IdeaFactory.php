@@ -25,7 +25,7 @@ class IdeaFactory extends Factory
             'user_id' => User::factory(),
             // 'user_id' => User::inRandomOrder()->value('id'),
             'title' => fake()->sentence(4),
-            'description' => fake()->paragraph(),
+            'description' => fake()->text(255),
             'status' => fake()->randomElement(IdeaStatus::cases()),
             'links' => [fake()->url()],
         ];

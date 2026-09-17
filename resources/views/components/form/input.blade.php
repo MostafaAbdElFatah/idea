@@ -6,6 +6,7 @@
     'autocomplete' => null,
     'placeholder' => null,
     'required' => true,
+    'bag' => 'default',
 ])
 
 <div {{ $attributes->only('class')->merge(['class' => 'flex flex-col items-start space-y-2']) }}>
@@ -22,7 +23,7 @@
             {{ $attributes->except('class') }}
             placeholder="{{ $placeholder ?? $label }}"
             @required($required)
-            class="textarea @error($name) border-error focus:border-error focus:ring-error/15 @enderror"
+            class="textarea @error($name, $bag) border-error focus:border-error focus:ring-error/15 @enderror"
         >{{ old($name, $value) }}</textarea>
     @else
         <input
@@ -32,11 +33,11 @@
             value="{{ old($name, $value) }}"
             autocomplete="{{ $autocomplete }}"
             {{ $attributes->except('class') }}
-            class="input @error($name) border-error focus:border-error focus:ring-error/15 @enderror"
+            class="input @error($name, $bag) border-error focus:border-error focus:ring-error/15 @enderror"
             placeholder="{{ $placeholder ?? $label }}"
             @required($required)
         >
     @endif
 
-    <x-form.error :name="$name" />
+    <x-form.error :name="$name" :bag="$bag" />
 </div>

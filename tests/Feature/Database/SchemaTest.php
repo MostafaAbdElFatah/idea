@@ -10,7 +10,7 @@ describe('schema', function (): void {
     })->with(['users', 'password_reset_tokens', 'sessions', 'cache', 'cache_locks', 'jobs', 'job_batches', 'failed_jobs', 'ideas', 'steps']);
 
     it('defines the users columns', function (): void {
-        expect(Schema::hasColumns('users', ['id', 'first_name', 'last_name', 'email', 'email_verified_at', 'password', 'remember_token', 'created_at', 'updated_at']))->toBeTrue();
+        expect(Schema::hasColumns('users', ['id', 'first_name', 'last_name', 'email', 'email_verified_at', 'password', 'profile_image_path', 'banner_image_path', 'remember_token', 'created_at', 'updated_at']))->toBeTrue();
     });
 
     it('defines the ideas columns', function (): void {

@@ -89,5 +89,37 @@ window.masonryGrid = () => ({
 		});
 	},
 });
+window.avatarPicker = (currentUrl = null) => ({
+	currentUrl,
+	preview: currentUrl,
+	selected: false,
+	confirmRemove: false,
+	pick(event) {
+		const [file] = event.target.files;
+
+		this.revoke();
+
+		if (!file) {
+			this.clear();
+			return;
+		}
+
+		this.selected = true;
+		this.preview = URL.createObjectURL(file);
+		this.$refs.input.form.enctype = 'multipart/form-data';
+	},
+	clear() {
+		this.revoke();
+		this.$refs.input.value = '';
+		this.selected = false;
+		this.preview = this.currentUrl;
+		this.$refs.input.form.enctype = 'application/x-www-form-urlencoded';
+	},
+	revoke() {
+		if (this.selected && this.preview) {
+			URL.revokeObjectURL(this.preview);
+		}
+	},
+});
 
 Alpine.start();

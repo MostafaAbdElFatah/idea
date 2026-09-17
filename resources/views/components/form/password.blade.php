@@ -5,6 +5,8 @@
 'autocomplete' => 'current-password',
 'placeholder' => 'At least 8 characters',
 'showStrength' => false,
+'required' => true,
+'bag' => 'default',
 ])
 
 <div 
@@ -23,9 +25,9 @@
             x-model="value"
             :type="inputType"
             autocomplete="{{ $autocomplete }}" {{ $attributes->except('class') }}
-            class="input pr-12 @error($name) border-red-600 focus:border-red-600 focus:ring-red-600/15 @enderror"
+            class="input pr-12 @error($name, $bag) border-red-600 focus:border-red-600 focus:ring-red-600/15 @enderror"
             placeholder="{{ $placeholder }}"
-            required
+            @required($required)
         >
 
         <button 
@@ -89,5 +91,5 @@
     @endif
 
 
-    <x-form.error :name="$name" />
+    <x-form.error :name="$name" :bag="$bag" />
 </div>
