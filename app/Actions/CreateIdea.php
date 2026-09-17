@@ -19,10 +19,10 @@ class CreateIdea
     public function handle(User $user, array $attributes, ?UploadedFile $image = null): Idea
     {
         return DB::transaction(function () use ($user, $attributes, $image): Idea {
-            $idea = $user->ideas()->create([
-                ...collect($attributes)->except(['steps', 'image'])->all(),
-                'image_path' => $image?->store('ideas', 'public'),
-            ]);
+            $idea = $user->ideas()->create(collect($attributes)
+                ->except(['steps', 'image'])
+                ->put('image_path', $image?->store('ideas', 'public'))
+                ->all());
 
             $idea->steps()->createMany(
                 collect($attributes['steps'] ?? [])

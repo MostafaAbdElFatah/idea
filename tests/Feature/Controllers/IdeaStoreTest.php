@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Enums\IdeaStatus;
 use App\Http\Controllers\Ideas\IdeaController;
 use App\Models\Idea;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\post;
 
@@ -42,6 +44,21 @@ describe('creating an idea', function (): void {
 
         expect($idea->status)->toBe(IdeaStatus::PENDING)
             ->and($idea->links->getArrayCopy())->toBe([]);
+    });
+
+    it('stores the uploaded image on the public disk', function (): void {
+        Storage::fake('public');
+        loginAs();
+
+        post(route('idea.store'), [
+            'title' => 'Build a garden',
+            'image' => UploadedFile::fake()->image('garden.jpg'),
+        ])->assertRedirect();
+
+        $idea = Idea::query()->sole();
+
+        expect($idea->image_path)->toStartWith('ideas/');
+        Storage::disk('public')->assertExists($idea->image_path);
     });
 
     it('rejects invalid input and reopens the dialog', function (array $payload, string $field): void {

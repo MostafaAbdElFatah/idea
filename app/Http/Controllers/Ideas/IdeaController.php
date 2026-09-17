@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ideas;
 
+use App\Actions\CreateIdea;
 use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIdeaRequest;
@@ -42,31 +43,31 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIdeaRequest $request): RedirectResponse
-    {
-        $validated = $request->safe()->except(['steps', 'image']); //->except('steps');
+public function store(StoreIdeaRequest $request, CreateIdea $createIdea): RedirectResponse    {
+        // $validated = $request->safe()->except(['steps', 'image']); //->except('steps');
         
-        $steps = $request['steps'] ?? [];
-        unset($request['steps']);
+        // $steps = $request['steps'] ?? [];
+        // unset($request['steps']);
 
-        $imagePath = $request->file('image')?->store('ideas', 'public');
+        // $imagePath = $request->file('image')?->store('ideas', 'public');
 
-        $data = collect($validated)
-            ->except(['steps', 'image'])
-            ->put('image_path', $imagePath)
-            ->all();
+        // $data = collect($validated)
+        //     ->except(['steps', 'image'])
+        //     ->put('image_path', $imagePath)
+        //     ->all();
 
-        $idea = $request->user()->ideas()->create($data);
+        // $idea = $request->user()->ideas()->create($data);
 
-        $idea->steps()->createMany(
-            collect($steps)
-                ->map(fn ($description) => trim((string) $description))
-                ->filter()
-                ->map(fn ($description) => [
-                    'description' => $description,
-                ])
-                ->all()
-        );
+        // $idea->steps()->createMany(
+        //     collect($steps)
+        //         ->map(fn ($description) => trim((string) $description))
+        //         ->filter()
+        //         ->map(fn ($description) => [
+        //             'description' => $description,
+        //         ])
+        //         ->all()
+        // );
+        $idea = $createIdea->handle($request->user(), $request->validated(), $request->file('image'));
 
         return redirect()
             ->route('idea.show', $idea)
