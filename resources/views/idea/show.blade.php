@@ -11,6 +11,14 @@
                     :height="16" class="text-red-500" />
             </div>
         </div>
+
+        @if ($idea->imageUrl)
+        <!-- $idea->imageUrl or Storage::url($idea->image_path) or asset('storage/' . $idea->image_path) -->
+        <div class="rounded-lg overflow-hidden mt-10">
+            <img src="{{ $idea->imageUrl }}" alt="{{ $idea->title }}" class="w-full h-auto object-cover">
+        </div>
+        @endif
+
         <h1 class="font-bold text-4xl mt-6 mx-2">{{ $idea->title }}</h1>
         <div class="flex gap-x-3 items-center mt-4">
             <x-idea.status-label :status="$idea->status" />
@@ -37,7 +45,8 @@
                                 &check;
                             </button>
 
-                            <span class="{{ $step->completed ? 'line-through text-muted-foreground' : '' }}">{{ $step->description }}</span>
+                            <span class="{{ $step->completed ? 'line-through text-muted-foreground' : '' }}">{{
+                                $step->description }}</span>
                         </div>
                     </x-form>
                 </x-layout.card>

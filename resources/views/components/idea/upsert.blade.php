@@ -29,6 +29,7 @@
         :action="$action"
         :method="$method"
         class="p-1 space-y-6"
+        enctype="multipart/form-data"
         x-data="ideaForm({{ \Illuminate\Support\Js::from($initialFormState) }})"
     >
         <x-form.input autofacus label="Title" name="title" placeholder="Enter a title for your idea" />
@@ -45,10 +46,8 @@
         <x-form.input autofacus label="Description" name="description" type="textarea"
             placeholder="Describe your idea" :required=false />
 
-
-
          <!-- Steps -->
-        <x-form.input autofacus label="Image" name="image" type="file" placeholder="Enter a title for your idea" :required="false"/>
+        <x-form.input autofacus label="Image" name="image" type="file" accept="image/" :required="false"/>
 
                 <div class="space-y-3">
             <label for="step" class="label">Actionable Steps</label>

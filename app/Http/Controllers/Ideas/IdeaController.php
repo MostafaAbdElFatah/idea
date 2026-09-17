@@ -44,28 +44,29 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-        $steps = $validated['steps'] ?? [];
+        $validated = $request->safe()->except(['steps', 'image']); //->except('steps');
+        
+        $steps = $request['steps'] ?? [];
+        unset($request['steps']);
 
-        $idea = $request->user()->ideas()->create([
-            'title' => $validated['title'],
-            'description' => $validated['description'] ?? null,
-            'status' => $validated['status'] ?? IdeaStatus::PENDING->value,
-            'links' => $validated['links'] ?? [],
-            'image_path' => $validated['image_path'] ?? null,
-        ]);
+        $imagePath = $request->file('image')?->store('ideas', 'public');
 
-        foreach ($steps as $description) {
-            $description = trim((string) $description);
+        $data = collect($validated)
+            ->except(['steps', 'image'])
+            ->put('image_path', $imagePath)
+            ->all();
 
-            if ($description === '') {
-                continue;
-            }
+        $idea = $request->user()->ideas()->create($data);
 
-            $idea->steps()->create([
-                'description' => $description,
-            ]);
-        }
+        $idea->steps()->createMany(
+            collect($steps)
+                ->map(fn ($description) => trim((string) $description))
+                ->filter()
+                ->map(fn ($description) => [
+                    'description' => $description,
+                ])
+                ->all()
+        );
 
         return redirect()
             ->route('idea.show', $idea)
